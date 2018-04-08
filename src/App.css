@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100|Work+Sans:200');
+
+.Absolute-CenterK {
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.Absolute-CenterK.is-ResponsiveK {
+    width: 65%;
+    height: 65%;
+    min-width: 500px;
+    max-width: 500px;
+    padding: 10px;
+}
+
+.text {
+    font-family: 'Work sans', sans-serif;
+    font-size: 2em;
+}
