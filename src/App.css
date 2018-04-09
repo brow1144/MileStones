@@ -1,20 +1,62 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100|Work+Sans:200');
 
-.Absolute-CenterK {
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+/* Pen-specific styles */
+* {
+    box-sizing: border-box;
 }
 
-.Absolute-CenterK.is-ResponsiveK {
-    width: 65%;
-    height: 65%;
-    min-width: 500px;
-    max-width: 500px;
-    padding: 10px;
+body {
+    font-size: 1.25rem;
+    font-family: 'Work Sans', sans-serif;
+    line-height: 150%;
+}
+
+section {
+    /*color: #fff;*/
+    text-align: center;
+}
+
+div {
+    height: 100%;
+}
+
+article {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 20px;
 }
 
 .text {
-    font-family: 'Work sans', sans-serif;
     font-size: 2em;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.container {
+    display: table;
+    width: 100%;
+}
+
+.left-half {
+    background: url(blueSignIn.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-color: #ff9e2c;*/
+    position: absolute;
+    left: 0;
+    width: 50%;
+}
+
+.right-half {
+    position: absolute;
+    right: 0;
+    width: 50%;
 }
