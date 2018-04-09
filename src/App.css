@@ -1,41 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100|Work+Sans:200');
 
-/* Pen-specific styles */
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-size: 1.25rem;
-    font-family: 'Work Sans', sans-serif;
-    line-height: 150%;
-}
-
-section {
-    /*color: #fff;*/
-    text-align: center;
-}
-
 div {
     height: 100%;
 }
 
 article {
-    position: absolute;
+    width: 70%;
+    padding: 40px;
+    position: relative;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    padding: 20px;
+    transform: translateY(-50%);
 }
 
 .text {
-    font-size: 2em;
-}
-
-h1 {
-    font-size: 1.75rem;
-    margin: 0 0 0.75rem 0;
+    font-size: 1.2em;
 }
 
 .container {
@@ -49,7 +27,6 @@ h1 {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    /*background-color: #ff9e2c;*/
     position: absolute;
     left: 0;
     width: 50%;
