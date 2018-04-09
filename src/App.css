@@ -22,7 +22,7 @@ article {
 }
 
 .left-half {
-    background: url(blueSignIn.jpg) no-repeat center center fixed;
+    background: url(./blueSignIn.jpg) no-repeat right top fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

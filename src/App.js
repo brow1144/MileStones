@@ -13,7 +13,7 @@ class App extends Component {
           <article>
             <h3 className="text">Please Sign In</h3>
             <Form>
-              <Input label="Email"/>
+              <Input style={{fontSize: '0.75em'}} label="Email"/>
               <Input label="Password" type="password"/>
               <br/>
               <Button color="info" >Sign In!</Button>
