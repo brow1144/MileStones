@@ -3,6 +3,7 @@ import './SignIn.css';
 
 import {Input, Button} from 'mdbreact';
 import {Form, Row, Col} from 'reactstrap';
+import {NavLink} from 'react-router-dom';
 
 import Logo from '../logo.svg';
 
@@ -26,12 +27,9 @@ class SignIn extends Component {
               <Input style={{fontSize: '0.85em'}} label="Email"/>
               <Input label="Password" type="password"/>
               <br/>
-              <Button className='signInButton' color="info" >Sign In!</Button>
+              <Button className='signInButton' color="blue" >Sign In!</Button>
+              <NavLink style={{textDecoration: 'none'}} to="/MileStones/create-account">Sign Up!</NavLink>
             </Form>
-            {/*<hr/>*/}
-            {/*<NavLink style={{textDecoration: 'none'}} to="/create-account">*/}
-            {/*<Button color="info" >Sign Up!</Button>*/}
-            {/*</NavLink>*/}
           </article>
         </div>
       </section>
