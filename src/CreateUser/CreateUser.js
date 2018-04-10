@@ -35,7 +35,7 @@ class CreateUser extends Component {
               <Input label="Password" type="password"/>
               <Input label="Confirm Password" type="password"/>
               <br/>
-              <Button className='signInButton' color="info">Sign Up!</Button>
+              <Button className='signInButton' color="blue">Sign Up!</Button>
             </Form>
           </article>
         </div>
