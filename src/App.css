@@ -37,3 +37,35 @@ article {
     right: 0;
     width: 50%;
 }
+
+@media only screen and (max-width: 500px) {
+
+    .left-half {
+        width: 20%;
+    }
+
+    .right-half {
+        width: 80%;
+    }
+
+    article {
+        width: 100%;
+    }
+
+    .signInButton {
+        width: 10em;
+        height: 3em;
+        font-size: 0.4em;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

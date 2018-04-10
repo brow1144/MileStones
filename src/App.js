@@ -16,7 +16,7 @@ class App extends Component {
               <Input style={{fontSize: '0.75em'}} label="Email"/>
               <Input label="Password" type="password"/>
               <br/>
-              <Button color="info" >Sign In!</Button>
+              <Button className='signInButton' color="info" >Sign In!</Button>
             </Form>
             {/*<hr/>*/}
             {/*<NavLink style={{textDecoration: 'none'}} to="/create-account">*/}
