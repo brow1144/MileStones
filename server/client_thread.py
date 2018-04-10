@@ -1,7 +1,14 @@
 import threading
-import errno
 
 BUFSIZE = 10000 
+
+class Error(Exception):
+    pass
+
+class ConnectionError(Error):
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
 
 class clientThread (threading.Thread):
     def __init__(self, threadID, name, counter):
@@ -9,6 +16,7 @@ class clientThread (threading.Thread):
         self.threadID = threadID
         self.name = name
         self.counter = counter
+
     def run(self, client, addr):
         print("Hello World")
         try:
@@ -18,9 +26,11 @@ class clientThread (threading.Thread):
                     # handle request
                     self.handleRequest(client, addr, data)
                 else:
-                    raise Error('Client dissconnect')
+                    raise ConnectionError('Client dissconnect')
         except:
             client.close()
             return
+            
     def handleRequest(self, client, addr, data):
+        print(data)
         client.send(data)
