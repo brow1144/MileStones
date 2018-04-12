@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './SignIn.css';
 
 import {Input, Button} from 'mdbreact';
-import {Form, Row, Col} from 'reactstrap';
+import {Form, Row, Col, Alert} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 
 import Logo from '../logo.svg';
@@ -15,17 +15,23 @@ class SignIn extends Component {
     super(props);
 
     this.state = {
-
+      visible: false,
+      errorMessage: '',
     }
   }
 
   handleSignIn = (ev) => {
     ev.preventDefault();
 
+    let self = this;
     fireauth.signInWithEmailAndPassword(ev.target.email.value, ev.target.password.value)
       .catch(function(err) {
-        console.log('Shit hit the fan');
+        self.setState({visible: true, errorMessage: err.message})
       });
+  };
+
+  onDismiss = () => {
+    this.setState({visible: false})
   };
 
   render() {
@@ -43,6 +49,9 @@ class SignIn extends Component {
                 <h3 className="text">Welcome Back!</h3>
               </Col>
             </Row>
+            <Alert color="primary" isOpen={this.state.visible} toggle={this.onDismiss}>
+              {this.state.errorMessage}
+            </Alert>
             <Form onSubmit={this.handleSignIn}>
               <Input name='email' style={{fontSize: '0.85em'}} label="Email"/>
               <Input name='password' label="Password" type="password"/>

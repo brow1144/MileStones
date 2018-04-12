@@ -22,7 +22,6 @@ class SignIn extends Component {
 
   handleSignOut = () => {
     localStorage.removeItem('uid');
-    // this.setState({uid: null});
     this.firebaseOut();
     window.location.reload();
   };
