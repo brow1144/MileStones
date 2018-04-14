@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 
-import {Input, Button} from 'mdbreact';
+import {Button} from 'mdbreact';
 
 import { fireauth } from "../base";
+import axios from 'axios';
 
 class SignIn extends Component {
 
@@ -12,6 +13,15 @@ class SignIn extends Component {
     this.state = {
 
     }
+  }
+
+  componentWillMount() {
+    axios.get('http://localhost:8082')
+      .then(
+        response => console.log(response)
+      ).catch(() => {
+      console.log('Good catch!')
+    })
   }
 
   firebaseOut = () => {
