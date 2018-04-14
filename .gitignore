@@ -25,3 +25,5 @@ yarn-error.log*
 
 # admin files
 milestones-firebase-sdk.json
+
+*.xml
