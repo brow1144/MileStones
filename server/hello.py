@@ -19,5 +19,5 @@ def get_users():
 
 @app.route("/users", methods=['POST'])
 def add_user():
-    incomes.append(request.get_json())
+    users.append(request.get_json())
     return '', 204
