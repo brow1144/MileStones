@@ -13,8 +13,8 @@ class Project:
         self.mileStones = mileStones
         self.completed = completed
 
-class MileStone:
-    def __init__ (self, id, name, dueDate, completed):
+class User:
+    def __init__ (self, id, name, projects):
         self.id = id
         self.name = name
         self.projects = projects
