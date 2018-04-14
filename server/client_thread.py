@@ -26,7 +26,7 @@ class clientThread (threading.Thread):
                     # handle request
                     self.handleRequest(client, addr, data)
                 else:
-                    raise ConnectionError('Client dissconnect')
+                    raise ConnectionError('Client disconnect','message')
         except:
             client.close()
             return

@@ -23,4 +23,7 @@ yarn-error.log*
 # compiled python
 *.pyc
 
+# admin files
+milestones-firebase-sdk.json
+
 *.xml
