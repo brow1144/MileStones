@@ -1,6 +1,7 @@
 import socket
 import threading
 import client_thread
+import fb_functions
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -17,18 +18,16 @@ serverSocket.setsockopt(socket.SOL_SOCKET, socket.SOCK_STREAM, 1)
 serverSocket.bind((host, portNum))
 serverSocket.listen(1)
 
+user = type('obj',(object,), {'name' : 'NIck', 'ID' : 123456789})
+fb_functions.addUser(user)
+'''
 # initialize firebase
 cred = credentials.Certificate('./milestones-firebase-sdk.json')
 default_app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 '''
-doc_ref = db.collection(u'users').document(u'test')
-doc_ref.set({
-    u'name': u'Walter',
-    u'schedule': False,
-})
-'''
+
 
 threadCount = 1
 # Address requests
