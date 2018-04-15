@@ -86,7 +86,7 @@ class Home extends Component {
       <div>
         <Router>
         <Navbar color="grey lighten-5" expand="lg" fixed="top" scrolling>
-          <NavbarBrand style={{color: '#2196F3'}} href="#">
+          <NavbarBrand className='headerFont' style={{color: '#2196F3'}} href="#">
             MileStones
           </NavbarBrand>
           { !this.state.isWideEnough && <NavbarToggler style={{cursor: 'pointer', color: '#2196f3'}} onClick={this.onClick}><i className="fas fa-align-justify"/> </NavbarToggler>}
@@ -159,6 +159,7 @@ class Home extends Component {
           </Col>
           <Col xs='1'/>
         </Row>
+        <br/>
         <hr/>
         <br/>
         <br/>
