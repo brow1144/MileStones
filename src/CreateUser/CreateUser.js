@@ -45,16 +45,16 @@ class CreateUser extends Component {
   render() {
     return (
       <section className="container">
-        <div className="left-half" />
-        <div className="right-half">
+        <div className="left-half tall" />
+        <div className="right-half tall">
           <article>
             <Row>
               <Col sm='0' md='3'>
                 <img className='logo' src={Logo} alt="MileStone" />
               </Col>
               <Col xs='0' md='1'/>
-              <Col sm='12' md='7'>
-                <h3 className="text">Lets Start by Signing Up!</h3>
+              <Col className='text' sm='12' md='7'>
+                Lets Start by Signing Up!
               </Col>
             </Row>
             <br/>

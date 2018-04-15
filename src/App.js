@@ -3,6 +3,8 @@ import './App.css';
 
 import {Route, Switch, Redirect} from 'react-router-dom';
 
+import 'font-awesome/css/font-awesome.min.css';
+
 import SignIn from './SignIn/SignIn';
 import CreateUser from './CreateUser/CreateUser';
 import Home from './HomePage/Home';

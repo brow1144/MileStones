@@ -10,7 +10,6 @@ host = 'localhost'
 portNum = 8080
 
 
-
 # set up socket
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSocket.setsockopt(socket.SOL_SOCKET, socket.SOCK_STREAM, 1)
