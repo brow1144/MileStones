@@ -20,19 +20,16 @@ def getUsers():
     usersRef = db.collection('users').get()
     return usersRef
 
-<<<<<<< HEAD
 def getUserById(userId):
     userRef = db.collection('users').where(u'id', u'==', str(userId))
     return userRef.get()
     
-=======
 def idGenerator():
     id = ""
     for i in range(6):
         id += random.randint(1,10)
     return id
 
->>>>>>> origin/master
 def addProject(user,project):
     projectRef = db.collection('users').document(str(user.ID)).collection('projects').document(str(project.ID))
     projectRef.set({
