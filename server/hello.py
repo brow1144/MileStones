@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request
+import json
+import fb_functions as fb
+
 app = Flask(__name__)
 
 users = [
@@ -15,7 +18,24 @@ def hello_world():
 
 @app.route("/users")
 def get_users():
+    usrs = fb.getUsers()
+    # Build json response with users
+    usrList = []
+    for usr in usrs:
+        d = usr.to_dict()
+        d['id'] = usr.id;
+        usrList.append(d)
+    respj = { 'users': usrList }
+    return jsonify(respj)
+
+@app.route("/users/<id>")
+def get_user_by_id(id):
+    
     return jsonify(users)
+
+@app.route("/users/<id>", methods=['POST'])
+def new_user(id):
+    return '', 204
 
 @app.route("/users", methods=['POST'])
 def add_user():
