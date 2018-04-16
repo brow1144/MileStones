@@ -17,6 +17,10 @@ def addUser(user):
 def getUsers():
     usersRef = db.collection('users').get()
     return usersRef
+
+def getUserById(userId):
+    userRef = db.collection('users').where(u'id', u'==', str(userId))
+    return userRef.get()
     
 def addProject(user,project):
     projectRef = db.collection('users').document(str(user.ID)).collection('projects').document(str(project.ID))

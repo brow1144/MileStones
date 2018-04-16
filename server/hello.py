@@ -23,15 +23,18 @@ def get_users():
     usrList = []
     for usr in usrs:
         d = usr.to_dict()
-        d['id'] = usr.id;
         usrList.append(d)
     respj = { 'users': usrList }
     return jsonify(respj)
 
 @app.route("/users/<id>")
 def get_user_by_id(id):
-    
-    return jsonify(users)
+    usr = fb.getUserById(id);
+    d = {}
+    for u in usr:
+        d = u.to_dict()
+    respj = { 'user': d }
+    return jsonify(respj)
 
 @app.route("/users/<id>", methods=['POST'])
 def new_user(id):
