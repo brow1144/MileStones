@@ -22,7 +22,7 @@ def getUsers():
 
 def getUserById(userId):
     userRef = db.collection('users').where(u'id', u'==', str(userId))
-    return userRef.get()
+    return (userRef.get(), getAllProjects(userId))
     
 def idGenerator():
     id = ""
