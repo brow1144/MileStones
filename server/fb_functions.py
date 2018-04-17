@@ -13,7 +13,8 @@ db = firestore.client()
 def addUser(user):
     userRef = db.collection('users').document(str(user.ID))
     userRef.set({
-        u'name': user.name
+        u'name': user.name,
+        u'id': user.id
     })
 
 def getUsers():

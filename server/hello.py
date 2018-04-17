@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import json
 import fb_functions as fb
+import objects as obj
 
 app = Flask(__name__)
 
@@ -41,8 +42,11 @@ def get_user_by_id(id):
     respj = { 'user': d }
     return jsonify(respj)
 
-@app.route("/users/<id>", methods=['POST'])
+@app.route("/users", methods=['POST'])
 def new_user(id):
+    j = request.get_json()
+    newUser = obj.User(j['id'], j['name'], [])
+    fb.addUser(newUser)
     return '', 204
 
 @app.route("/users", methods=['POST'])
