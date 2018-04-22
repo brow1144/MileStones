@@ -11,6 +11,7 @@ CORS(app)
 def hello_world():
     return "Hello, World"
 
+# get all users
 @app.route("/users")
 def get_users():
     usrs = fb.getUsers()
@@ -22,6 +23,7 @@ def get_users():
     respj = { 'users': usrList }
     return jsonify(respj)
 
+# get a certain user
 @app.route("/users/<id>")
 def get_user_by_id(id):
     usr, projects = fb.getUserById(id)
@@ -36,6 +38,7 @@ def get_user_by_id(id):
     respj = { 'user': d }
     return jsonify(respj)
 
+# add a new user
 @app.route("/users", methods=['POST'])
 def new_user():
     j = request.get_json()
@@ -43,12 +46,35 @@ def new_user():
     fb.addUser(newUser)
     return '', 204
 
+exampleJson = {
+    'user': {
+        'id': 1234,
+        'name': 'Nick'
+    },
+    'project': {
+        'name': 'Essay',
+        'dueDate': '4/28/18',
+        'mileStones': [
+            {
+                'name': 'Research'
+            },
+            {
+                'name': 'Outline'
+            },
+            {
+                'name': 'Rough Draft'
+            }
+        ]
+    }
+}
+
+# add a new project
 @app.route("/users/projects", methods=['POST'])
 def new_project():
     j = request.get_json()
     usrJson = j['user']
     projectJson = j['project']
-    newUser = obj.User(usrJson['id'], usrJson, [])
+    newUser = obj.User(usrJson['id'], usrJson['name'], [])
     pId = fb.idGenerator()
     newProject = obj.Project(pId, projectJson['name'], projectJson['dueDate'], [], False)
     mileStones = projectJson['mileStones']
@@ -57,4 +83,13 @@ def new_project():
         ms = obj.MileStone(mID, m['name'], '', False)
         newProject.mileStones.append(ms)
     # fb.addProject(newUser, newProject)
+    return '', 204
+
+# update mileStone
+@app.route("/users/projects/mileStone", methods=['PUT'])
+def update_mileStone():
+    j = request.get_json()
+    mileJson = j['mileStone']
+    ms = obj.MileStone(mileJson['id'], mileJson['json'], mileJson['completed'])
+    fb.updateMilestone(j['uid'], j['pid'])
     return '', 204

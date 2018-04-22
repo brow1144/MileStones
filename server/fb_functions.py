@@ -92,3 +92,6 @@ def getMilestonesByProject(uid,pid):
     milesRef = db.collection('users').document(uid).collection('project').document(pid)
     return milesRef
 
+def updateMilestone(uid,pid,mileStone):
+    # TODO firebase call for updating milestones
+    print(uid,pid,mileStone)
