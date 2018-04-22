@@ -8,12 +8,17 @@ import {Row, Col} from 'reactstrap';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 
+import 'react-responsive-modal/lib/react-responsive-modal.css';
+import Modal1 from 'react-responsive-modal/lib/css';
+
 import './Home.css';
 import 'font-awesome/css/font-awesome.min.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { fireauth } from "../base";
 import axios from 'axios';
+
+import Modal from 'react-responsive-modal';
 
 BigCalendar.momentLocalizer(moment);
 
@@ -25,6 +30,7 @@ class Home extends Component {
     this.state = {
       collapse: false,
       isWideEnough: false,
+      modalOpen: false,
     }
   }
 
@@ -35,6 +41,14 @@ class Home extends Component {
       ).catch(() => {
       console.log('Good catch!')
     })
+  }
+
+  onOpenModal = (ev) => {
+    this.setState({modalOpen: true});
+  }
+
+  onCloseModal = () => {
+    this.setState({modalOpen: false});
   }
 
   onClick = () => {
@@ -89,8 +103,8 @@ class Home extends Component {
           { !this.state.isWideEnough && <NavbarToggler style={{cursor: 'pointer', color: '#2196f3'}} onClick={this.onClick}><i className="fas fa-align-justify"/> </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav right>
-              <NavItem style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}} >
-                <NavLink className="nav-link" to="/MileStones/Home">Add Event</NavLink>
+              <NavItem onClick={this.onOpenModal} style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}} >
+                <NavLink className="nav-link" to="/MileStones/Home">Add Event</NavLink>            
               </NavItem>
               <NavItem style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}}>
                 <NavLink onClick={this.handleSignOut} className="nav-link" to="">Sign Out</NavLink>
@@ -104,6 +118,19 @@ class Home extends Component {
         <br/>
         <br/>
         <br/>
+        <Modal
+          open={this.state.modalOpen}
+          onClose={this.onCloseModal}
+          little
+         >
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet
+            hendrerit risus, sed porttitor quam.
+          </p>
+        </Modal>
+
+
         <Row>
           <Col xs='1'/>
           <Col xs='7'>
