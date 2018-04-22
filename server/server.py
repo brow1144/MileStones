@@ -1,38 +1,44 @@
-import socket
-import threading
-import client_thread
-import fb_functions
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from flask import Flask, jsonify, request
+import json
+import fb_functions as fb
+import objects as obj
+from flask_cors import CORS
 
-host = 'localhost'
-portNum = 8080
+app = Flask(__name__)
+CORS(app)
 
+@app.route("/")
+def hello_world():
+    return "Hello, World"
 
-# set up socket
-serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverSocket.setsockopt(socket.SOL_SOCKET, socket.SOCK_STREAM, 1)
+@app.route("/users")
+def get_users():
+    usrs = fb.getUsers()
+    # Build json response with users
+    usrList = []
+    for usr in usrs:
+        d = usr.to_dict()
+        usrList.append(d)
+    respj = { 'users': usrList }
+    return jsonify(respj)
 
-serverSocket.bind((host, portNum))
-serverSocket.listen(1)
+@app.route("/users/<id>")
+def get_user_by_id(id):
+    usr, projects = fb.getUserById(id);
+    d = {}
+    projectList = []
+    for u in usr:
+        d = u.to_dict()
+        for p in projects:
+            d2 = p.to_dict()
+            projectList.append(d2)
+    d['projects'] = projectList
+    respj = { 'user': d }
+    return jsonify(respj)
 
-user = type('obj',(object,), {'name' : 'NIck', 'ID' : 123456789})
-fb_functions.addUser(user)
-'''
-# initialize firebase
-cred = credentials.Certificate('./milestones-firebase-sdk.json')
-default_app = firebase_admin.initialize_app(cred)
-db = firestore.client()
-
-'''
-
-
-threadCount = 1
-# Address requests
-while 1:
-    client, addr = serverSocket.accept()
-    t = client_thread.clientThread(1, "Thread", 1)
-    t.run(client, addr)
-    threadCount = threadCount + 1
-    
+@app.route("/users", methods=['POST'])
+def new_user():
+    j = request.get_json()
+    newUser = obj.User(j['id'], j['name'], [])
+    fb.addUser(newUser)
+    return '', 204
