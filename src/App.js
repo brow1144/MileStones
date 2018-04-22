@@ -11,6 +11,8 @@ import Home from './HomePage/Home';
 
 import firebase from './base';
 
+import axios from 'axios';
+
 class App extends Component {
 
   constructor() {
@@ -29,6 +31,16 @@ class App extends Component {
         if (user) {
           // finished signing in
           self.authHandler(user)
+          // get user data from database
+          let url = 'http://localhost:5000/users/' + this.state.uid
+          axios.get(url)
+            .then(function (response) {
+              let respData = response.data.user;
+              console.log(respData);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         } else {
           // finished signing out
           self.setState({uid: null}, () => {
@@ -75,7 +87,7 @@ class App extends Component {
 
         <Route exact path='/MileStones/create-account' render={() => (
           !this.signedIn()
-            ? <CreateUser props={this.state}/>
+            ? <CreateUser/>
             : <Redirect to="/MileStones/Home"/>
         )}/>
 
