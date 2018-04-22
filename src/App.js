@@ -75,7 +75,7 @@ class App extends Component {
 
         <Route exact path='/MileStones/create-account' render={() => (
           !this.signedIn()
-            ? <CreateUser/>
+            ? <CreateUser props={this.state}/>
             : <Redirect to="/MileStones/Home"/>
         )}/>
 

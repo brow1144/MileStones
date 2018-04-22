@@ -6,6 +6,9 @@ import {Form, Row, Col, Alert} from 'reactstrap';
 
 import Logo from '../logo.svg';
 
+import { fireauth } from '../base';
+import axios from 'axios';
+
 class CreateUser extends Component {
 
   constructor(props) {
@@ -32,8 +35,31 @@ class CreateUser extends Component {
     } else {
       if (target.password.value !== target.confirmPassword.value)
         this.setState({visible: true, message: 'Passwords Don\'t Match!'});
-      else
-        this.setState({visible: false, message: ''});
+      else {
+        let self = this;
+        fireauth.createUserWithEmailAndPassword(target.email.value, target.password.value)
+          .then(function(userData) {
+            console.log(userData)
+
+            // Make addUser httpRequest
+            axios.post('http://localhost:5000/users', {
+              name: target.firstName.value + " " + target.lastName.value,
+              id: userData.uid,
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+            self.setState({visible: false, message: ''});
+          }.bind(target)).catch(function(error) {
+            // Handle error
+              console.log(error);
+              self.setState({visible: true, message: error.message});
+          });
+      }
     }
 
   };
