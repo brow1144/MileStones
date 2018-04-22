@@ -27,8 +27,8 @@ def getUserById(userId):
     
 def idGenerator():
     id = ""
-    for i in range(6):
-        id += random.randint(1,10)
+    for i in range(16):
+        id += str(random.randint(1,10))
     return id
 
 def addProject(user,project):
