@@ -24,7 +24,7 @@ def get_users():
 
 @app.route("/users/<id>")
 def get_user_by_id(id):
-    usr, projects = fb.getUserById(id);
+    usr, projects = fb.getUserById(id)
     d = {}
     projectList = []
     for u in usr:

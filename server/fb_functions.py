@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import random
+from datetime import datetime
 
 # initialize firebase
 cred = credentials.Certificate('./milestones-firebase-sdk.json')
@@ -32,13 +33,25 @@ def idGenerator():
     return id
 
 def addProject(user,project):
-    projectRef = db.collection('users').document(str(user.ID)).collection('projects').document(str(project.ID))
+    #print(project)
+    project.dueDate = "Tue, 22 Nov 2011"
+    #print(time.strptime("Tue, 22 Nov 2011", "%a, %d %b %Y"))
+    dueDate = datetime.strptime(project.dueDate, "%a, %d %b %Y")
+    now = datetime.now()
+    days = dueDate - now
+    print(days)
+    numMileStones = len(project.mileStones)
+    print(numMileStones)
+
+
+
+'''    projectRef = db.collection('users').document(str(user.ID)).collection('projects').document(str(project.ID))
     projectRef.set({
         u'name': project.name,
         u'completed': False,
         u'dueDate': project.dueDate,
         u'mileStones': [],
-    })
+    }) '''
 
 def getAllProjects(uid):
     projectsRef = db.collection('users').document(uid).collection('projects').get()
