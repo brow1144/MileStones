@@ -42,3 +42,19 @@ def new_user():
     newUser = obj.User(j['id'], j['name'], [])
     fb.addUser(newUser)
     return '', 204
+
+@app.route("/users/projects", methods=['POST'])
+def new_project():
+    j = request.get_json()
+    usrJson = j['user']
+    projectJson = j['project']
+    newUser = obj.User(usrJson['id'], usrJson, [])
+    pId = fb.idGenerator()
+    newProject = obj.Project(pId, projectJson['name'], projectJson['dueDate'], [], False)
+    mileStones = projectJson['mileStones']
+    for m in mileStones:
+        mID = fb.idGenerator()
+        ms = obj.MileStone(mID, m['name'], '', False)
+        newProject.mileStones.append(ms)
+    # fb.addProject(newUser, newProject)
+    return '', 204
