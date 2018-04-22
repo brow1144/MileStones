@@ -2,14 +2,16 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # initialize firebase
 cred = credentials.Certificate('./milestones-firebase-sdk.json')
 default_app = firebase_admin.initialize_app(cred) 
 db = firestore.client()
 
-
+#dueDate = datetime.strptime("Tue, 2 Nov 2011", "%a, %d %b %Y")
+#dueDate = dueDate - timedelta(days=3)
+#print(dueDate)
 
 def addUser(user):
     userRef = db.collection('users').document(str(user.id))
@@ -29,7 +31,7 @@ def getUserById(userId):
 def idGenerator():
     id = ""
     for i in range(16):
-        id += str(random.randint(1,10))
+        id += str(random.randint(1,9))
     return id
 
 def addProject(user,project):
@@ -42,6 +44,24 @@ def addProject(user,project):
     print(days)
     numMileStones = len(project.mileStones)
     print(numMileStones)
+
+    dayRatio = days/numMileStones
+
+    prevDate = dueDate
+    dayDet = 0
+    for i in numMileStones:
+        if dayDet == 0:
+            project.mileStones[i].dueDate = (dueDate.days - 1).strftime('%a, %d %b %Y')
+        else:
+            if dayDet > round(dayDet,0):
+                print('greater')
+                prevDate = prevDate - timedelta(day=round(dayDet))
+            elif dayDet < round(dayDet,0):
+                print('lesser')
+            else:
+                print('equal')
+        dayDet += dayRatio
+        
 
 
 
