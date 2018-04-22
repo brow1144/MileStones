@@ -37,16 +37,6 @@ class Home extends Component {
     }
   }
 
-  componentWillMount() {
-    console.log(this.props.userData)
-    // axios.get('http://localhost:5000/users')
-    //   .then(
-    //     response => console.log(response)
-    //   ).catch(() => {
-    //   console.log('Good catch!')
-    // })
-  }
-
   handleChange = (date) => {
     this.setState({
       startDate: date
@@ -99,27 +89,35 @@ class Home extends Component {
   sendMilestones = (ev) => {
     ev.preventDefault()
 
-    //ev.target.name.value
-    //ev.target.date.value
-    
-    for(let data in this.state.milestones) {
-      console.log(this.state.milestones[data]);
+    let milestones = [];
+
+    for(let i in this.state.milestones) {
+      let object = {'name': this.state.milestones[i]}
+      milestones.push(object)
     }
 
-    console.log(this.props.uid)
-
-    // axios.post('http://localhost:5000/users/projects', {
-    //   name: target.firstName.value + " " + target.lastName.value,
-    //   id: userData.uid,
-    // }).then(function (response) {
-    //   console.log(response);
-    // }).catch(function (error) {
-    //     console.log(error);
-    // });
+    let data = {
+      'user': {
+        'id': this.props.user.id,
+        'name': this.props.user.name
+      },
+      'project': {
+        'name': ev.target.name.value,
+        'dueDate': ev.target.date.value,
+        'mileStones': milestones,
+      }
+    }
+    
+    axios.post('http://localhost:5000/users/projects', data).then(function (response) {
+      console.log(response);
+    }).catch(function (error) {
+        console.log(error);
+    });
 
   }
 
   render() {
+
     const calendarStyles = {
       height: '30em',
 
