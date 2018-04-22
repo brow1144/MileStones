@@ -20,6 +20,7 @@ class App extends Component {
 
     this.state = {
       uid: null,
+      userData: null,
     }
   }
 
@@ -35,8 +36,10 @@ class App extends Component {
           let url = 'http://localhost:5000/users/' + this.state.uid
           axios.get(url)
             .then(function (response) {
+              // console.log(response)
               let respData = response.data.user;
               console.log(respData);
+              self.setState({userData: respData})
             })
             .catch(function (error) {
               console.log(error);
@@ -69,13 +72,17 @@ class App extends Component {
 
 
   render() {
+    const data = {
+      uid: this.state.uid,
+      userData: this.state.userData,
+    }
     return (
 
       <Switch>
 
         <Route exact path='/MileStones/Home' render={() => (
           this.signedIn()
-            ? <Home/>
+            ? <Home {...data}/>
             : <Redirect to="/MileStones/sign-in"/>
         )}/>
 
