@@ -31,3 +31,5 @@ milestones-firebase-sdk.json
 *.xml
 
 *.xml
+
+.vscode/settings.json
