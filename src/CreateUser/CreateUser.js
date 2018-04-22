@@ -36,26 +36,29 @@ class CreateUser extends Component {
       if (target.password.value !== target.confirmPassword.value)
         this.setState({visible: true, message: 'Passwords Don\'t Match!'});
       else {
+        let self = this;
         fireauth.createUserWithEmailAndPassword(target.email.value, target.password.value)
-          .catch(function(error) {
+          .then(function(userData) {
+            console.log(userData)
+
+            // Make addUser httpRequest
+            axios.post('http://localhost:5000/users', {
+              name: target.firstName.value + " " + target.lastName.value,
+              id: userData.uid,
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+            self.setState({visible: false, message: ''});
+          }.bind(target)).catch(function(error) {
             // Handle error
-            console.log(error);
-            this.setState({visible: true, message: error.message});
-          }.bind(this));
-
-        // Make addUser httpRequest
-        axios.post('http://localhost:5000/users', {
-            name: target.firstName.value + " " + target.lastName.value,
-            id: 1,
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
+              console.log(error);
+              self.setState({visible: true, message: error.message});
           });
-
-        this.setState({visible: false, message: ''});
       }
     }
 
