@@ -39,7 +39,9 @@ class CreateUser extends Component {
         fireauth.createUserWithEmailAndPassword(target.email.value, target.password.value)
           .catch(function(error) {
             // Handle error
-          });
+            console.log(error);
+            this.setState({visible: true, message: error.message});
+          }.bind(this));
 
         // Make addUser httpRequest
         axios.post('http://localhost:5000/users', {
