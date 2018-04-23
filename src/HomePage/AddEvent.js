@@ -65,10 +65,7 @@ class AddEvent extends Component {
       milestones.push(object)
     }
 
-    var arr = ev.target.date.value.split("/");
-    let string = arr[2] + '-' + arr[0] + '-' + arr[1]
-    var dateObject = new Date(string);
-    console.log(dateObject.toUTCString())
+    console.log(ev.target.date.value)
 
     let data = {
       'user': {
@@ -81,11 +78,9 @@ class AddEvent extends Component {
         'mileStones': milestones,
       }
     }
-
-    console.log(data)
     
     axios.post('http://localhost:5000/users/projects', data).then((response) => {
-      console.log(response);
+      // console.log(response);
     }).catch(function (error) {
         console.log(error);
     });
