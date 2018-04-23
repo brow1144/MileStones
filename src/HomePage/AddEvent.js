@@ -65,6 +65,11 @@ class AddEvent extends Component {
       milestones.push(object)
     }
 
+    var arr = ev.target.date.value.split("/");
+    let string = arr[2] + '-' + arr[0] + '-' + arr[1]
+    var dateObject = new Date(string);
+    console.log(dateObject.toUTCString())
+
     let data = {
       'user': {
         'id': this.props.user.id,

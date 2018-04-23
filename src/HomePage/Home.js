@@ -9,13 +9,13 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { fireauth } from "../base";
-import axios from 'axios';
+// import axios from 'axios';
 
 import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
 
-import {User, Project, MileStone} from '../Objects';
+// import {User, Project, MileStone} from '../Objects';
 
 BigCalendar.momentLocalizer(moment);
 
@@ -30,19 +30,40 @@ class Home extends Component {
 
       collapse: false,
       isWideEnough: false,
-      user: this.props.user,
+      
+      mileStonesCalendar: [{}],
     }
-    console.log(this.state.user)
   }
 
   componentWillMount() {
-    console.log(this.props.user)
+    this.loadCalendar()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
 
   componentWillUnMount() {
     window.removeEventListener('resize', this.handleWindowChange)
+  }
+
+  loadCalendar = () => {
+    for (let i in this.props.user.projects) {
+      let projects = this.props.user.projects[i]
+      for (let j in projects.mileStones) {
+        let mileStones = projects.mileStones[j]
+        let event = {
+          id: j, 
+          title: mileStones.name,
+          allDay: true,
+          start: new Date('2018-04-18'),
+          end: new Date('2018-04-18'),
+        }
+        let temp = this.state.mileStonesCalendar
+        temp.push(event)
+        this.setState({mileStonesCalendar: temp})
+
+      
+      }
+    }
   }
 
   handleWindowChange = () => {
@@ -91,7 +112,7 @@ class Home extends Component {
   render() {
 
     const calendarStyles = {
-      height: '30em',
+      height: '40em',
     };
 
     const events = [
@@ -135,11 +156,11 @@ class Home extends Component {
               <BigCalendar
                 toolbar={this.state.toolbar}
                 selectable
-                events={events}
+                events={this.state.mileStonesCalendar}
                 style={calendarStyles}
                 defaultDate={new Date()}
                 eventPropGetter={(this.eventStyleGetter)}
-                onSelectEvent={event => alert(event.title)}
+                // onSelectEvent={event => alert(event.title)}
               />
             </Col>
             <Col xs='12' md='3'>
