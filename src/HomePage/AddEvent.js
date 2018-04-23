@@ -116,7 +116,7 @@ class AddEvent extends Component {
                 <MileStoneName 
                   {...actions}
                   number={index + 1} 
-                  key={index} 
+                  key={key} 
                   milestones={this.state.milestones}
                 /> 
               ) 

@@ -1,0 +1,22 @@
+
+.delete {
+  font-size: 18px;
+  color: grey;
+  position: absolute;
+  bottom: 0.95rem;
+  left: 3.5rem;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.deleteDiv {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 990px) {
+  .delete {
+    left: 1.5rem;
+  }
+}
+
+
