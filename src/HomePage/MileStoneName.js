@@ -12,9 +12,7 @@ class MileStoneName extends Component {
 
     let temp = this.props.milestones
     temp[this.props.number - 1] = ev.target.value
-    // console.log(temp)
 
-    this.setState({text: ev.target.value})
     this.props.updateMileStones(temp)
   }
 
@@ -27,17 +25,16 @@ class MileStoneName extends Component {
     this.props.updateMileStones(temp)
   }
 
-
-
   render() {
     return (
       <Row>
-        <Col className='deleteDiv' onClick={this.handleDelete} xs='1' md='1'> 
+        {/* <Col className='deleteDiv' onClick={this.handleDelete} xs='1' md='1'> 
           <i className="fas fa-times delete" />
-        </Col>
+        </Col> */}
+        <Col xs='1' md='1'/>
         <Col xs='11' md='6'>
           <Input onChange={this.updateMileStones} 
-                 defaultValue={this.props.milestones[this.props.number - 1]} 
+                 value={this.props.milestones[this.props.number - 1]} 
                  label={`MileStone #${this.props.number}`} 
           />
         </Col>
