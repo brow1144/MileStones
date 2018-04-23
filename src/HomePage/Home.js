@@ -30,14 +30,13 @@ class Home extends Component {
 
       collapse: false,
       isWideEnough: false,
+      user: this.props.user,
     }
+    console.log(this.state.user)
   }
 
   componentWillMount() {
-
     console.log(this.props.user)
-
-
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }

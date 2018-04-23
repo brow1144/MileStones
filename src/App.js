@@ -80,7 +80,11 @@ class App extends Component {
 
         <Route exact path='/MileStones/Home' render={() => (
           this.signedIn()
-            ? <Home {...data} />
+            ? (this.state.user
+              ?
+              <Home {...data} />
+              :
+              null)
             : <Redirect to="/MileStones/sign-in"/>
         )}/>
 
