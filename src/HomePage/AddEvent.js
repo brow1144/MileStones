@@ -47,12 +47,6 @@ class AddEvent extends Component {
       milestones.push(object)
     }
 
-    console.log(this.props.user.id)
-    console.log(this.props.user.name)
-    console.log(ev.target.name.value)
-    console.log(ev.target.date.value)
-    console.log(milestones)
-
     let data = {
       'user': {
         'id': this.props.user.id,
@@ -64,8 +58,10 @@ class AddEvent extends Component {
         'mileStones': milestones,
       }
     }
+
+    console.log(data)
     
-    axios.post('http://localhost:5000/users/projects', data).then(function (response) {
+    axios.post('http://localhost:5000/users/projects', data).then((response) => {
       console.log(response);
     }).catch(function (error) {
         console.log(error);
