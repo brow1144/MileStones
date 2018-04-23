@@ -38,23 +38,23 @@ class CreateUser extends Component {
       else {
         let self = this;
         fireauth.createUserWithEmailAndPassword(target.email.value, target.password.value)
-          .then(function(userData) {
-            console.log(userData)
+          .then((userData) => {
+            // console.log(userData)
 
             // Make addUser httpRequest
             axios.post('http://localhost:5000/users', {
               name: target.firstName.value + " " + target.lastName.value,
               id: userData.uid,
             })
-            .then(function (response) {
-              console.log(response);
+            .then((response) => {
+              // console.log(response);
             })
-            .catch(function (error) {
+            .catch((error) => {
               console.log(error);
             });
 
             self.setState({visible: false, message: ''});
-          }.bind(target)).catch(function(error) {
+          }).catch((error) => {
             // Handle error
               console.log(error);
               self.setState({visible: true, message: error.message});
