@@ -18,7 +18,8 @@ class AddEvent extends Component {
     
     this.state = {
       startDate: moment(),
-      milestones: [], 
+      milestoneTitle: '',
+      milestones: [''], 
     }
   }
 
@@ -34,8 +35,25 @@ class AddEvent extends Component {
     this.setState({milestones: currentState})
   }
 
+  handleClose = (ev) => {
+    ev.preventDefault()
+
+    this.props.toggle()
+
+    this.setState({
+      milestoneTitle: '',
+      milestones: [''],
+    })
+  }
+
   updateMileStones = (data) => {
     this.setState({milestones: data})
+  }
+
+  updateTitle = (ev) => {
+    ev.preventDefault()
+
+    this.setState({milestoneTitle: ev.target.value})
   }
 
   sendMilestones = (ev) => {
@@ -68,7 +86,6 @@ class AddEvent extends Component {
     });
   }
 
-
   render() {
     const actions = {
       updateMileStones: this.updateMileStones,
@@ -82,7 +99,7 @@ class AddEvent extends Component {
             <Row>
               <Col xs='12' md='1'/>
               <Col xs='12' md='6'>
-                <Input name='name' label="Project Name"/>
+                <Input name='name' onChange={this.updateTitle} label="Project Name" defaultValue={this.state.milestoneTitle}/>
               </Col>
               <Col style={{paddingTop: '4%'}} xs='12' md='4'> 
                 <DatePicker
@@ -118,7 +135,7 @@ class AddEvent extends Component {
 
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.props.toggle}>Close</Button>{' '}
+            <Button color="secondary" onClick={this.handleClose}>Close</Button>{' '}
             <Button type='submit' color="primary">Submit MileStones</Button>
           </ModalFooter>
         </Form>
