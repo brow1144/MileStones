@@ -9,10 +9,13 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { fireauth } from "../base";
+import axios from 'axios';
 
 import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
+
+import {User, Project, MileStone} from '../Objects';
 
 BigCalendar.momentLocalizer(moment);
 
@@ -27,11 +30,15 @@ class Home extends Component {
 
       collapse: false,
       isWideEnough: false,
-
+      user: this.props.user,
     }
   }
 
   componentWillMount() {
+
+    console.log(this.state.user)
+
+
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
