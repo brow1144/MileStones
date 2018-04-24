@@ -38,6 +38,8 @@ class Home extends Component {
       projectSideBar: [],
 
       editProjectModal: false,
+      editProject: {},
+      editBackdrop: false,
 
       colors: [
         '#0099CC', '#00C851', '#9933CC', '#ff4444', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
@@ -155,7 +157,9 @@ class Home extends Component {
   }
 
   toggleEditProject = () => {
-    this.setState({editProjectModal: !this.state.editProjectModal})
+    this.setState({editBackdrop: false}, () => {
+      this.setState({editProjectModal: !this.state.editProjectModal})
+    })
   }
 
   onClick = () => {
@@ -188,7 +192,7 @@ class Home extends Component {
   };
 
   handleEdit = (event) => {
-    console.log(event)
+    this.setState({editProject: event.project, editProjectModal: true, editBackdrop: true})
   }
 
   render() {
@@ -215,6 +219,8 @@ class Home extends Component {
     const editProjectProps = {
       editProjectModal: this.state.editProjectModal,
       toggleEditProject: this.toggleEditProject,
+      editProject: this.state.editProject,
+      editBackdrop: this.state.editBackdrop,
     }
 
     return (
@@ -229,7 +235,12 @@ class Home extends Component {
 
           <AddEvent {...addEventProps}/>
 
-          <EditProject {...editProjectProps}/>
+          {this.state.editProject.mileStones === undefined 
+            ?
+              null
+            :
+              <EditProject {...editProjectProps}/>
+          }
 
           <Row>
             <Col xs='1' md='1'/>
