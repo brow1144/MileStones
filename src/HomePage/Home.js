@@ -31,12 +31,14 @@ class Home extends Component {
       collapse: false,
       isWideEnough: false,
       
-      mileStonesCalendar: [{}],
+      mileStonesCalendar: [],
+      projectSideBar: [],
     }
   }
 
   componentWillMount() {
     this.loadCalendar()
+    this.getSideData()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
@@ -45,23 +47,81 @@ class Home extends Component {
     window.removeEventListener('resize', this.handleWindowChange)
   }
 
+  convertDate = (date) => {
+    var arr = date.split("/");
+    let string = '20' + arr[2] + '-' + arr[0] + '-' + arr[1]
+    return new Date(string);
+  }
+
   loadCalendar = () => {
     for (let i in this.props.user.projects) {
       let projects = this.props.user.projects[i]
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
+        let dateObject = this.convertDate(mileStones.dueDate)
         let event = {
           id: j, 
           title: mileStones.name,
           allDay: true,
-          start: new Date('2018-04-18'),
-          end: new Date('2018-04-18'),
+          start: dateObject,
+          end: dateObject,
         }
         let temp = this.state.mileStonesCalendar
         temp.push(event)
         this.setState({mileStonesCalendar: temp})
+      }
+    }
+  }
 
-      
+  daysBetween = (date1, date2) => {
+
+    // The number of milliseconds in one day
+    var ONE_DAY = 1000 * 60 * 60 * 24
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime()
+    var date2_ms = date2.getTime()
+
+    // Calculate the difference in milliseconds
+    var difference_ms = Math.abs(date1_ms - date2_ms)
+
+    // Convert back to days and return
+    return Math.round(difference_ms/ONE_DAY)
+  }
+
+  sameDay = (day1, day2) => {
+    return day1.getFullYear() === day2.getFullYear() &&
+           day1.getMonth() === day2.getMonth() &&
+           day1.getDate() === day2.getDate()
+  }
+
+  getSideData = () => {
+    for (let i in this.props.user.projects) {
+      let projects = this.props.user.projects[i]
+
+      let today = new Date()
+      let dueDate = this.convertDate(projects.dueDate)
+      let numberOfDays = this.daysBetween(today, dueDate)
+      let milestoneToday = this.getMileStoneToday(projects)
+
+      let sideData = {
+        name: projects.name,
+        dueDate: projects.dueDate,
+        numberOfDays: numberOfDays,
+        mileStoneToday: milestoneToday,
+      }
+
+      let temp = this.state.projectSideBar
+      temp.push(sideData)
+      this.setState({projectSideBar: temp})
+    }
+  }
+
+  getMileStoneToday = (projects) => {
+    for (let j in projects.mileStones) {
+      let mileStones = projects.mileStones[j]
+      if (this.sameDay(new Date(), this.convertDate(mileStones.dueDate))) {
+        return mileStones.name
       }
     }
   }
@@ -115,15 +175,6 @@ class Home extends Component {
       height: '40em',
     };
 
-    const events = [
-      {
-        id: 14,
-        title: 'ENGL 106 Essay',
-        start: new Date(new Date().setHours(new Date().getHours() - 3)),
-        end: new Date(new Date().setHours(new Date().getHours() + 3)),
-      },
-    ];
-
     const navProps = {
       isWideEnough: this.state.isWideEnough,
       onClick: this.onClick,
@@ -164,12 +215,23 @@ class Home extends Component {
               />
             </Col>
             <Col xs='12' md='3'>
-              <SideEvents />
+              {this.state.projectSideBar.map((key, index) => {
+                return (
+                  <SideEvents 
+                    project={key}
+                    key={index} 
+                  /> 
+                ) 
+              })}
             </Col>
             <Col xs='12' md='1'/>
           </Row>
 
           <br/>
+          <br/>
+          <br/>
+          <br/>
+
 
       </div>
     );
