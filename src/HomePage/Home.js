@@ -15,6 +15,8 @@ import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
 
+import {ListGroup} from 'mdbreact';
+
 // import {User, Project, MileStone} from '../Objects';
 
 BigCalendar.momentLocalizer(moment);
@@ -49,7 +51,7 @@ class Home extends Component {
 
   convertDate = (date) => {
     var arr = date.split("/");
-    let string = '20' + arr[2] + '-' + arr[0] + '-' + arr[1]
+    let string = arr[2] + '-' + arr[0] + '-' + arr[1]
     return new Date(string);
   }
 
@@ -215,14 +217,18 @@ class Home extends Component {
               />
             </Col>
             <Col xs='12' md='3'>
-              {this.state.projectSideBar.map((key, index) => {
-                return (
-                  <SideEvents 
-                    project={key}
-                    key={index} 
-                  /> 
-                ) 
-              })}
+            <div className="sideFloat z-depth-2">
+              <ListGroup>
+                {this.state.projectSideBar.map((key, index) => {
+                  return (
+                    <SideEvents 
+                      project={key}
+                      key={index} 
+                    /> 
+                  ) 
+                })}
+              </ListGroup>
+            </div>
             </Col>
             <Col xs='12' md='1'/>
           </Row>
