@@ -221,6 +221,8 @@ class Home extends Component {
       toggleEditProject: this.toggleEditProject,
       editProject: this.state.editProject,
       editBackdrop: this.state.editBackdrop,
+      user: this.props.user,
+      updateUser: this.props.updateUser,
     }
 
     return (

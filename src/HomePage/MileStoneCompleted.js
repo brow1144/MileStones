@@ -8,35 +8,26 @@ class MileStoneCompleted extends Component {
     super(props)
 
     this.state = {
-      checked: false,
+      checked: this.props.data.completed,
     }
   }
 
-  updateCheck() {
-    this.setState((oldState) => {
-      return {
-        checked: !oldState.checked,
-      };
-    });
+  handleCheck = () => {
+    this.setState({checked: !this.state.checked})
+    let temp = this.props.data
+    temp.completed = !this.state.checked
+    this.props.updateProject(temp)
   }
 
-  render() {
-    const styles = {
-      block: {
-        maxWidth: 250,
-      },
-      checkbox: {
-        marginBottom: 16,
-      },
-    };
-
+  render() {  
     return (
       <MuiThemeProvider>
-        <div style={styles.block}>
+        <div>
           <Checkbox
-              label={this.props.data.name}
-              style={styles.checkbox}
-            />
+            checked={this.state.checked}
+            onCheck={this.handleCheck}
+            label={this.props.data.name}
+          />
         </div>
       </MuiThemeProvider>
     )
