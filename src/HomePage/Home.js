@@ -209,6 +209,7 @@ class Home extends Component {
       modal: this.state.modal,
       user: this.props.user,
       toggle: this.toggle,
+      updateUser: this.props.updateUser,
     }
     
     const editProjectProps = {

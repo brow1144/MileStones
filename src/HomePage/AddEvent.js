@@ -97,6 +97,17 @@ class AddEvent extends Component {
     
     axios.post('http://localhost:5000/users/projects', data).then((response) => {
       this.props.toggle()
+      let self = this;
+          axios.get(`http://localhost:5000/users/${this.props.user.id}`)
+            .then(function (response) {
+              let respData = response.data.user
+              console.log(self.props);
+              self.props.updateUser(respData)
+              window.location.reload();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
     }).catch(function (error) {
         this.setState({visible: true, errorMessage: error.message})
     });

@@ -24,6 +24,10 @@ class App extends Component {
     }
   }
 
+  updateUser = (data) => {
+    this.setState({user: data})
+  }
+
   componentWillMount() {
     this.getUserFromLocalStorage();
     let self = this;
@@ -33,8 +37,7 @@ class App extends Component {
           // finished signing in
           self.authHandler(user)
           // get user data from database
-          let url = 'http://localhost:5000/users/' + this.state.uid
-          axios.get(url)
+          axios.get(`http://localhost:5000/users/${this.state.uid}`)
             .then(function (response) {
               let respData = response.data.user;
               // console.log(respData)
@@ -72,7 +75,8 @@ class App extends Component {
   
     const data = {
       user: this.state.user,
-      uid: this.state.uid
+      uid: this.state.uid,
+      updateUser: this.updateUser,
     }
   
     return (
@@ -82,9 +86,10 @@ class App extends Component {
           this.signedIn()
             ? (this.state.user
               ?
-              <Home {...data} />
+                <Home {...data} />
               :
-              null)
+               null
+            )
             : <Redirect to="/MileStones/sign-in"/>
         )}/>
 
