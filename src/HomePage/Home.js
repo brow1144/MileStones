@@ -35,6 +35,10 @@ class Home extends Component {
       
       mileStonesCalendar: [],
       projectSideBar: [],
+
+      colors: [
+        '#0099CC', '#00C851', '#9933CC', '#21ce99', '#3F729B', '#ff4444', '#00695c', '#ffbb33', '#0d47a1'
+      ],
     }
   }
 
@@ -61,7 +65,11 @@ class Home extends Component {
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
         let dateObject = this.convertDate(mileStones.dueDate)
+
+        // console.log(this.state.colors[i])
+
         let event = {
+          color: this.state.colors[i],
           id: j, 
           title: mileStones.name,
           allDay: true,
@@ -156,19 +164,21 @@ class Home extends Component {
     })
   };
 
-  eventStyleGetter = () => {
-    return {
-      style: {
-        backgroundColor: '#2196f3',
-        fontSize: '0.6em',
-      }
-    };
-  };
-
   handleSignOut = () => {
     localStorage.removeItem('uid');
     this.firebaseOut();
     window.location.reload();
+  };
+
+  eventStyleGetter = (event, start, end, isSelected) => {
+    // console.log(`Event Color: ${event.color}`)
+
+    return {
+      style: {
+        backgroundColor: event.color,
+        fontSize: '0.6em',
+      }
+    };
   };
 
   render() {
