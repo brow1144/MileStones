@@ -37,7 +37,7 @@ class Home extends Component {
       projectSideBar: [],
 
       colors: [
-        '#0099CC', '#00C851', '#9933CC', '#21ce99', '#3F729B', '#ff4444', '#00695c', '#ffbb33', '#0d47a1'
+        '#0099CC', '#00C851', '#9933CC', '#ff4444', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
       ],
     }
   }
@@ -119,6 +119,7 @@ class Home extends Component {
         dueDate: projects.dueDate,
         numberOfDays: numberOfDays,
         mileStoneToday: milestoneToday,
+        color: this.state.colors[i],
       }
 
       let temp = this.state.projectSideBar
@@ -227,18 +228,23 @@ class Home extends Component {
               />
             </Col>
             <Col xs='12' md='3'>
-            <div className="sideFloat z-depth-2">
-              <ListGroup>
-                {this.state.projectSideBar.map((key, index) => {
-                  return (
-                    <SideEvents 
-                      project={key}
-                      key={index} 
-                    /> 
-                  ) 
-                })}
-              </ListGroup>
-            </div>
+              {this.state.projectSideBar.length < 1
+              ?
+                null
+              :
+                <div className="sideFloat z-depth-2">
+                  <ListGroup>
+                    {this.state.projectSideBar.map((key, index) => {
+                      return (
+                        <SideEvents 
+                          project={key}
+                          key={index} 
+                        /> 
+                      ) 
+                    })}
+                  </ListGroup>
+                </div>
+              }
             </Col>
             <Col xs='12' md='1'/>
           </Row>

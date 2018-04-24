@@ -4,7 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 
 import {Button, Modal, ModalBody, ModalHeader, ModalFooter, Input } from 'mdbreact';
-import {Row, Col, Form} from 'reactstrap';
+import {Row, Col, Form, Alert} from 'reactstrap';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,6 +20,8 @@ class AddEvent extends Component {
       startDate: moment(),
       milestoneTitle: '',
       milestones: [''], 
+      visible: false,
+      errorMessage: '',
     }
   }
 
@@ -56,16 +58,30 @@ class AddEvent extends Component {
     this.setState({milestoneTitle: ev.target.value})
   }
 
+  checkForm = (ev) => {
+    if (ev.target.name.value === '') {
+      this.setState({visible: true, errorMessage: 'Please enter a project name!'})
+      return true
+    } else if (this.state.milestones) {
+      for(let i in this.state.milestones) {
+        if (this.state.milestones[i] === '') {
+          this.setState({visible: true, errorMessage: 'Please enter valid MileStones'})
+          return true
+        }
+      }
+    }
+  }
+
   sendMilestones = (ev) => {
     ev.preventDefault()
     
+    if (this.checkForm(ev)) return
+
     let milestones = [];
     for(let i in this.state.milestones) {
       let object = {'name': this.state.milestones[i]}
       milestones.push(object)
     }
-
-    console.log(ev.target.date.value)
 
     let data = {
       'user': {
@@ -80,10 +96,14 @@ class AddEvent extends Component {
     }
     
     axios.post('http://localhost:5000/users/projects', data).then((response) => {
-      // console.log(response);
+      this.props.toggle()
     }).catch(function (error) {
-        console.log(error);
+        this.setState({visible: true, errorMessage: error.message})
     });
+  }
+
+  onDismiss = () => {
+    this.setState({ visible: false });
   }
 
   render() {
@@ -96,6 +116,9 @@ class AddEvent extends Component {
         <Form onSubmit={this.sendMilestones}>
           <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
           <ModalBody>
+            <Alert color="primary" isOpen={this.state.visible} toggle={this.onDismiss}>
+              {this.state.errorMessage}
+            </Alert>
             <Row>
               <Col xs='12' md='1'/>
               <Col xs='12' md='6'>
