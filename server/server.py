@@ -91,6 +91,6 @@ def new_project():
 def update_mileStone():
     j = request.get_json()
     mileJson = j['mileStone']
-    ms = obj.MileStone(mileJson['id'], mileJson['json'], mileJson['completed'])
-    fb.updateMilestone(j['uid'], j['pid'])
+    ms = obj.MileStone(mileJson['id'], mileJson['json'],mileJson['dueDate'], mileJson['completed'])
+    fb.updateMilestone(j['uid'], j['pid'], ms)
     return '', 204

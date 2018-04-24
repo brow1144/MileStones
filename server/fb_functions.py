@@ -78,6 +78,7 @@ def addProject(user,project):
     projectRef.set({
         u'name': project.name,
         u'completed': False,
+        u'id': project.id,
         u'dueDate': project.dueDate,
         u'mileStones': json.loads(json.dumps(project.mileStones,default=obj_dict)),
     })
