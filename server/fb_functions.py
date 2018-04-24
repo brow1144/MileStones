@@ -58,28 +58,22 @@ def addProject(user,project):
 
     prevDate = dueDate
     dayDet = 0
-    for i in range(numMileStones):
+    for i in range(numMileStones-1,-1,-1):
         if dayDet == 0:
             project.mileStones[i].dueDate = (dueDate - timedelta(days=1)).strftime('%m/%d/%Y')
             prevDate = prevDate - timedelta(days=round(1))
         else:
             if dayDet > round(dayDet + 0.000001):
-                print(dayDet, file=sys.stdout)
-                print('rounds down', file=sys.stdout)
                 project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
             elif dayDet < round(dayDet + 0.000001):
-                print(dayDet, file=sys.stdout)  
-                print('rounds up', file=sys.stdout)
                 project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet + 0.000001))).strftime('%m/%d/%Y')
             else:
-                print(dayDet, file=sys.stdout)
-                print('equal', file=sys.stdout)
                 project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
             #project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
-        print(project.mileStones[i].dueDate, file=sys.stdout)
+        #print(project.mileStones[i].dueDate, file=sys.stdout)
         dayDet += dayRatio
 
-    print(project.mileStones, file=sys.stdout)
+    #print(project.mileStones, file=sys.stdout)
     projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
     projectRef.set({
         u'name': project.name,
