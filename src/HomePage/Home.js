@@ -15,6 +15,8 @@ import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
 
+import {ListGroup} from 'mdbreact';
+
 // import {User, Project, MileStone} from '../Objects';
 
 BigCalendar.momentLocalizer(moment);
@@ -31,12 +33,18 @@ class Home extends Component {
       collapse: false,
       isWideEnough: false,
       
-      mileStonesCalendar: [{}],
+      mileStonesCalendar: [],
+      projectSideBar: [],
+
+      colors: [
+        '#0099CC', '#00C851', '#9933CC', '#21ce99', '#3F729B', '#ff4444', '#00695c', '#ffbb33', '#0d47a1'
+      ],
     }
   }
 
   componentWillMount() {
     this.loadCalendar()
+    this.getSideData()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
@@ -45,23 +53,85 @@ class Home extends Component {
     window.removeEventListener('resize', this.handleWindowChange)
   }
 
+  convertDate = (date) => {
+    var arr = date.split("/");
+    let string = arr[2] + '-' + arr[0] + '-' + arr[1]
+    return new Date(string);
+  }
+
   loadCalendar = () => {
     for (let i in this.props.user.projects) {
       let projects = this.props.user.projects[i]
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
+        let dateObject = this.convertDate(mileStones.dueDate)
+
+        // console.log(this.state.colors[i])
+
         let event = {
+          color: this.state.colors[i],
           id: j, 
           title: mileStones.name,
           allDay: true,
-          start: new Date('2018-04-18'),
-          end: new Date('2018-04-18'),
+          start: dateObject,
+          end: dateObject,
         }
         let temp = this.state.mileStonesCalendar
         temp.push(event)
         this.setState({mileStonesCalendar: temp})
+      }
+    }
+  }
 
-      
+  daysBetween = (date1, date2) => {
+
+    // The number of milliseconds in one day
+    var ONE_DAY = 1000 * 60 * 60 * 24
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime()
+    var date2_ms = date2.getTime()
+
+    // Calculate the difference in milliseconds
+    var difference_ms = Math.abs(date1_ms - date2_ms)
+
+    // Convert back to days and return
+    return Math.round(difference_ms/ONE_DAY)
+  }
+
+  sameDay = (day1, day2) => {
+    return day1.getFullYear() === day2.getFullYear() &&
+           day1.getMonth() === day2.getMonth() &&
+           day1.getDate() === day2.getDate()
+  }
+
+  getSideData = () => {
+    for (let i in this.props.user.projects) {
+      let projects = this.props.user.projects[i]
+
+      let today = new Date()
+      let dueDate = this.convertDate(projects.dueDate)
+      let numberOfDays = this.daysBetween(today, dueDate)
+      let milestoneToday = this.getMileStoneToday(projects)
+
+      let sideData = {
+        name: projects.name,
+        dueDate: projects.dueDate,
+        numberOfDays: numberOfDays,
+        mileStoneToday: milestoneToday,
+      }
+
+      let temp = this.state.projectSideBar
+      temp.push(sideData)
+      this.setState({projectSideBar: temp})
+    }
+  }
+
+  getMileStoneToday = (projects) => {
+    for (let j in projects.mileStones) {
+      let mileStones = projects.mileStones[j]
+      if (this.sameDay(new Date(), this.convertDate(mileStones.dueDate))) {
+        return mileStones.name
       }
     }
   }
@@ -94,19 +164,21 @@ class Home extends Component {
     })
   };
 
-  eventStyleGetter = () => {
-    return {
-      style: {
-        backgroundColor: '#2196f3',
-        fontSize: '0.6em',
-      }
-    };
-  };
-
   handleSignOut = () => {
     localStorage.removeItem('uid');
     this.firebaseOut();
     window.location.reload();
+  };
+
+  eventStyleGetter = (event, start, end, isSelected) => {
+    // console.log(`Event Color: ${event.color}`)
+
+    return {
+      style: {
+        backgroundColor: event.color,
+        fontSize: '0.6em',
+      }
+    };
   };
 
   render() {
@@ -114,15 +186,6 @@ class Home extends Component {
     const calendarStyles = {
       height: '40em',
     };
-
-    const events = [
-      {
-        id: 14,
-        title: 'ENGL 106 Essay',
-        start: new Date(new Date().setHours(new Date().getHours() - 3)),
-        end: new Date(new Date().setHours(new Date().getHours() + 3)),
-      },
-    ];
 
     const navProps = {
       isWideEnough: this.state.isWideEnough,
@@ -164,12 +227,27 @@ class Home extends Component {
               />
             </Col>
             <Col xs='12' md='3'>
-              <SideEvents />
+            <div className="sideFloat z-depth-2">
+              <ListGroup>
+                {this.state.projectSideBar.map((key, index) => {
+                  return (
+                    <SideEvents 
+                      project={key}
+                      key={index} 
+                    /> 
+                  ) 
+                })}
+              </ListGroup>
+            </div>
             </Col>
             <Col xs='12' md='1'/>
           </Row>
 
           <br/>
+          <br/>
+          <br/>
+          <br/>
+
 
       </div>
     );
