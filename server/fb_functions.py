@@ -105,3 +105,13 @@ def getMilestonesByProject(uid,pid):
 def updateMilestone(uid,pid,mileStone):
     # TODO firebase call for updating milestones
     print(uid,pid,mileStone)
+    
+def updateProject(user,project):
+    projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
+    projectRef.update({
+        #u'name': project.name,
+        u'completed': project.completed,
+        #u'id': project.id,
+        #u'dueDate': project.dueDate,
+        u'mileStones': project.mileStones#json.loads(json.dumps(project.mileStones,default=obj_dict)),
+    })

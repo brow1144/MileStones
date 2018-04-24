@@ -49,28 +49,36 @@ def new_user():
 
 exampleJson = {
     'user': {
-        'id': 1234,
-        'name': 'Nick'
+        'id': 'ta3HKeUtGdQFtbIJ6W4tvw365Tm1',
+        'name': 'Walter Jacquette'
     },
     'project': {
+        'id': 123456,
         'name': 'Essay',
         'dueDate': '4/28/18',
+        'completed': False,
         'mileStones': [
             {
-                'name': 'Research'
+                'name': 'Research',
+                'dueDate': '4/25/2018',
+                'completed': True,
             },
             {
-                'name': 'Outline'
+                'name': 'Outline',
+                'dueDate': '4/26/2018',
+                'completed': False,
             },
             {
-                'name': 'Rough Draft'
+                'name': 'Rough Draft',
+                'dueDate': '4/27/2018',
+                'completed': False,
             }
         ]
     }
 }
 
 # add a new project
-@app.route("/users/projects", methods=['POST'])
+@app.route("/users/projects/add", methods=['POST'])
 def new_project():
     j = request.get_json()
     usrJson = j['user']
@@ -84,6 +92,22 @@ def new_project():
         ms = obj.MileStone(mID, m['name'], '', False)
         newProject.mileStones.append(ms)
     fb.addProject(newUser, newProject)
+    return '', 204
+
+# update a project
+@app.route("/users/projects/update")#, methods=['POST'])
+def update_project():
+    j = request.get_json()
+    usrJson = j['user']
+    projectJson = j['project']
+    newUser = obj.User(usrJson['id'], usrJson['name'], [])
+    newProject = obj.Project(projectJson['id'], projectJson['name'], projectJson['dueDate'], projectJson['mileStones'], projectJson['completed'])
+    mileStones = projectJson['mileStones']
+    '''for m in mileStones:
+        ms = obj.MileStone(m['id'], m['name'], '', m['completed'])
+        newProject.mileStones.append(ms)'''
+    print(newProject.mileStones, file=sys.stdout)
+    fb.updateProject(newUser, newProject)
     return '', 204
 
 # update mileStone
