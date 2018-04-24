@@ -14,6 +14,7 @@ import { fireauth } from "../base";
 import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
+import EditProject from './EditProject';
 
 import {ListGroup} from 'mdbreact';
 
@@ -35,6 +36,8 @@ class Home extends Component {
       
       mileStonesCalendar: [],
       projectSideBar: [],
+
+      editProjectModal: false,
 
       colors: [
         '#0099CC', '#00C851', '#9933CC', '#ff4444', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
@@ -65,10 +68,8 @@ class Home extends Component {
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
         let dateObject = this.convertDate(mileStones.dueDate)
-
-        // console.log(this.state.colors[i])
-
         let event = {
+          project: projects,
           color: this.state.colors[i],
           id: j, 
           title: mileStones.name,
@@ -153,6 +154,10 @@ class Home extends Component {
     this.setState({modal: !this.state.modal})
   }
 
+  toggleEditProject = () => {
+    this.setState({editProjectModal: !this.state.editProjectModal})
+  }
+
   onClick = () => {
     this.setState({
       collapse: !this.state.collapse,
@@ -182,6 +187,10 @@ class Home extends Component {
     };
   };
 
+  handleEdit = (event) => {
+    console.log(event)
+  }
+
   render() {
 
     const calendarStyles = {
@@ -201,6 +210,11 @@ class Home extends Component {
       user: this.props.user,
       toggle: this.toggle,
     }
+    
+    const editProjectProps = {
+      editProjectModal: this.state.editProjectModal,
+      toggleEditProject: this.toggleEditProject,
+    }
 
     return (
       <div>
@@ -214,6 +228,8 @@ class Home extends Component {
 
           <AddEvent {...addEventProps}/>
 
+          <EditProject {...editProjectProps}/>
+
           <Row>
             <Col xs='1' md='1'/>
             <Col xs='10' md='7'> 
@@ -224,7 +240,7 @@ class Home extends Component {
                 style={calendarStyles}
                 defaultDate={new Date()}
                 eventPropGetter={(this.eventStyleGetter)}
-                // onSelectEvent={event => alert(event.title)}
+                onSelectEvent={(event) => {this.handleEdit(event)}}
               />
             </Col>
             <Col xs='12' md='3'>
