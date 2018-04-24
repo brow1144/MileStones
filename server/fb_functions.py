@@ -3,15 +3,22 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import random
 from datetime import datetime, timedelta
+import sys
+import math
+import json
 
 # initialize firebase
 cred = credentials.Certificate('./milestones-firebase-sdk.json')
 default_app = firebase_admin.initialize_app(cred) 
 db = firestore.client()
 
-#dueDate = datetime.strptime("Tue, 2 Nov 2011", "%a, %d %b %Y")
-#dueDate = dueDate - timedelta(days=3)
+#dueDate = datetime.strptime("4/28/2018", "%m/%d/%Y")
+#dueDate = dueDate - timedelta(days=2)
 #print(dueDate)
+#dueDate = datetime.strptime("Mon, 23 Apr 2018 00:00:00 GMT", "%a, %d %b %Y %H:%M:%S %Z")
+#dueDate = datetime.strptime("04/23/2018", "%m/%d/%Y")
+#print(dueDate)
+
 
 def addUser(user):
     userRef = db.collection('users').document(str(user.id))
@@ -34,44 +41,52 @@ def idGenerator():
         id += str(random.randint(1,9))
     return id
 
-def addProject(user,project):
-    #print(project)
-    project.dueDate = "Tue, 22 Nov 2011"
-    #print(time.strptime("Tue, 22 Nov 2011", "%a, %d %b %Y"))
-    dueDate = datetime.strptime(project.dueDate, "%a, %d %b %Y")
-    now = datetime.now()
-    days = dueDate - now
-    print(days)
-    numMileStones = len(project.mileStones)
-    print(numMileStones)
+def obj_dict(obj):
+    return obj.__dict__
 
-    dayRatio = days/numMileStones
+def addProject(user,project):
+
+    dueDate = datetime.strptime(project.dueDate, "%m/%d/%Y")
+    now = datetime.today()
+    now = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    days = dueDate - now
+    #print(days, file=sys.stdout)
+    numMileStones = len(project.mileStones)
+
+    usedDays = days.days - 1
+    dayRatio = usedDays/numMileStones
 
     prevDate = dueDate
     dayDet = 0
-    for i in numMileStones:
+    for i in range(numMileStones):
         if dayDet == 0:
-            project.mileStones[i].dueDate = (dueDate.days - 1).strftime('%a, %d %b %Y')
+            project.mileStones[i].dueDate = (dueDate - timedelta(days=1)).strftime('%m/%d/%Y')
+            prevDate = prevDate - timedelta(days=round(1))
         else:
-            if dayDet > round(dayDet,0):
-                print('greater')
-                prevDate = prevDate - timedelta(day=round(dayDet))
-            elif dayDet < round(dayDet,0):
-                print('lesser')
+            if dayDet > round(dayDet + 0.000001):
+                print(dayDet, file=sys.stdout)
+                print('rounds down', file=sys.stdout)
+                project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
+            elif dayDet < round(dayDet + 0.000001):
+                print(dayDet, file=sys.stdout)  
+                print('rounds up', file=sys.stdout)
+                project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet + 0.000001))).strftime('%m/%d/%Y')
             else:
-                print('equal')
+                print(dayDet, file=sys.stdout)
+                print('equal', file=sys.stdout)
+                project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
+            #project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
+        print(project.mileStones[i].dueDate, file=sys.stdout)
         dayDet += dayRatio
-        
 
-
-
-'''    projectRef = db.collection('users').document(str(user.ID)).collection('projects').document(str(project.ID))
+    print(project.mileStones, file=sys.stdout)
+    projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
     projectRef.set({
         u'name': project.name,
         u'completed': False,
         u'dueDate': project.dueDate,
-        u'mileStones': [],
-    }) '''
+        u'mileStones': json.loads(json.dumps(project.mileStones,default=obj_dict)),
+    })
 
 def getAllProjects(uid):
     projectsRef = db.collection('users').document(uid).collection('projects').get()

@@ -3,6 +3,7 @@ import json
 import fb_functions as fb
 import objects as obj
 from flask_cors import CORS
+import sys
 
 app = Flask(__name__)
 CORS(app)
@@ -82,7 +83,7 @@ def new_project():
         mID = fb.idGenerator()
         ms = obj.MileStone(mID, m['name'], '', False)
         newProject.mileStones.append(ms)
-    # fb.addProject(newUser, newProject)
+    fb.addProject(newUser, newProject)
     return '', 204
 
 # update mileStone
