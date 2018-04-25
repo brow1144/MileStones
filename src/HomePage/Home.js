@@ -190,7 +190,7 @@ class Home extends Component {
         let projects = this.props.user.projects[i]
 
         if (!projects.hidden) {
-
+        
           let today = new Date()
           let dueDate = this.convertDate(projects.dueDate)
           let numberOfDays = this.daysBetween(today, dueDate)
