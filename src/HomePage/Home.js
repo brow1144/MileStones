@@ -60,8 +60,9 @@ class Home extends Component {
 
   convertDate = (date) => {
     var arr = date.split("/");
-    let string = arr[2] + '-' + arr[0] + '-' + arr[1]
-    return new Date(string);
+    let string = arr[2] + '/' + arr[0] + '/' + arr[1]
+    let newDate = new Date(string)
+    return newDate
   }
 
   loadCalendar = () => {
@@ -69,9 +70,7 @@ class Home extends Component {
       let projects = this.props.user.projects[i]
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
-        console.log(mileStones.dueDate)
         let dateObject = this.convertDate(mileStones.dueDate)
-        console.log(dateObject)
         let event = {
           project: projects,
           color: this.state.colors[i],
