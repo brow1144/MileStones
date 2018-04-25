@@ -17,8 +17,6 @@ class EditProject extends Component {
   }
 
   updateProject = (milestone) => {
-    // console.log(this.props.editProject)
-
     for (let i in this.props.editProject.mileStones) {
       let id = this.props.editProject.mileStones[i].id
       if (milestone.id === id) {
@@ -45,12 +43,12 @@ class EditProject extends Component {
 
   sendUpdatedProject = () => {
     axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
-      this.props.toggleEditProject()
       let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then((response) => {
               let respData = response.data.user
               self.props.updateUser(respData)
+              self.props.toggleEditProject()
               window.location.reload();
             })
             .catch((error) => {

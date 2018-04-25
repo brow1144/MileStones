@@ -58,13 +58,6 @@ class Home extends Component {
     window.removeEventListener('resize', this.handleWindowChange)
   }
 
-  convertDate = (date) => {
-    var arr = date.split("/");
-    let string = arr[2] + '/' + arr[0] + '/' + arr[1]
-    let newDate = new Date(string)
-    return newDate
-  }
-
   loadCalendar = () => {
     for (let i in this.props.user.projects) {
       let projects = this.props.user.projects[i]
@@ -110,6 +103,14 @@ class Home extends Component {
         this.setState({mileStonesCalendar: temp})
       }
     }
+  }
+
+  convertDate = (date) => {
+    if (date === undefined || date === null || date.length === 0) return 
+    var arr = date.split("/");
+    let string = arr[2] + '/' + arr[0] + '/' + arr[1]
+    let newDate = new Date(string)
+    return newDate
   }
 
   datePassed = (date) => {
@@ -163,6 +164,17 @@ class Home extends Component {
       temp.push(sideData)
       this.setState({projectSideBar: temp})
     }
+    let temp = this.state.projectSideBar
+    temp.sort(this.sortByDays)
+    this.setState({projectSideBar: temp})
+  }
+
+  sortByDays = (x, y) => {
+    if (x.numberOfDays < y.numberOfDays)
+      return -1;
+    if (x.numberOfDays > y.numberOfDays)
+      return 1;
+    return 0;
   }
 
   getMileStoneToday = (projects) => {
@@ -215,8 +227,6 @@ class Home extends Component {
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {
-    // console.log(`Event Color: ${event.color}`)
-
     return {
       style: {
         backgroundColor: event.color,
