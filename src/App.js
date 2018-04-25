@@ -59,6 +59,14 @@ class App extends Component {
     )
   }
 
+  componentDidUpdate() {
+    this.setState((oldState) => {
+      if (oldState !== this.state) {
+        this.getUserObjectFromSessionStorage()
+      }
+    })
+  }
+
   getUserFromLocalStorage() {
     const uid = localStorage.getItem('uid');
     if (!uid) return;

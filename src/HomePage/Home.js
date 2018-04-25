@@ -57,10 +57,18 @@ class Home extends Component {
     window.addEventListener('resize', this.handleWindowChange);
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    if(previousState !== this.props.data) {
-      this.loadCalendar()
-    }
+  // componentDidUpdate(previousProps, previousState) {
+  //   // if(previousState !== this.props.data) {
+  //   //   this.loadCalendar()
+  //   // }
+  // }
+
+  componentDidUpdate() {
+    this.setState((oldState) => {
+      if (oldState !== this.state) {
+        this.loadCalendar()
+      }
+    })
   }
 
   componentWillUnMount() {
