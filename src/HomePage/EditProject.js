@@ -34,6 +34,7 @@ class EditProject extends Component {
               'name': this.props.editProject.name,
               'dueDate': this.props.editProject.dueDate,
               'completed': false,
+              'hidden': false,
               'id': this.props.editProject.id, 
               'mileStones': tempMile,
           }
@@ -58,7 +59,8 @@ class EditProject extends Component {
             'name': this.props.editProject.name,
             'dueDate': this.props.editProject.dueDate,
             'completed': true,
-            'id': this.props.editProject.id, 
+            'id': this.props.editProject.id,
+            'hidden': false,
             // Possible Race Condition
             'mileStones': this.props.editProject.mileStones,
         }
