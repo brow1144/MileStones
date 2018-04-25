@@ -40,8 +40,6 @@ class App extends Component {
           axios.get(`http://localhost:5000/users/${self.state.uid}`)
             .then(function (response) {
               let respData = response.data.user;
-              // console.log(respData)
-              //self.saveUser(respData)
                self.setState({user: respData})
             })
             .catch(function (error) {

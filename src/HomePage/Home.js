@@ -57,9 +57,10 @@ class Home extends Component {
     window.addEventListener('resize', this.handleWindowChange);
   }
 
-  updateUser1 = (data) => {
+  updateUserHome = (data) => {
     this.props.updateUser(data)
     this.loadCalendar()
+    this.getSideData()
   }
 
   componentWillUnMount() {
@@ -155,29 +156,31 @@ class Home extends Component {
   }
 
   getSideData = () => {
-    for (let i in this.props.user.projects) {
-      let projects = this.props.user.projects[i]
+    this.setState({projectSideBar: []}, () => {
+      for (let i in this.props.user.projects) {
+        let projects = this.props.user.projects[i]
 
-      let today = new Date()
-      let dueDate = this.convertDate(projects.dueDate)
-      let numberOfDays = this.daysBetween(today, dueDate)
-      let milestoneToday = this.getMileStoneToday(projects)
+        let today = new Date()
+        let dueDate = this.convertDate(projects.dueDate)
+        let numberOfDays = this.daysBetween(today, dueDate)
+        let milestoneToday = this.getMileStoneToday(projects)
 
-      let sideData = {
-        name: projects.name,
-        dueDate: projects.dueDate,
-        numberOfDays: numberOfDays,
-        mileStoneToday: milestoneToday,
-        color: this.state.colors[i],
+        let sideData = {
+          name: projects.name,
+          dueDate: projects.dueDate,
+          numberOfDays: numberOfDays,
+          mileStoneToday: milestoneToday,
+          color: this.state.colors[i],
+        }
+
+        let temp = this.state.projectSideBar
+        temp.push(sideData)
+        this.setState({projectSideBar: temp})
       }
-
       let temp = this.state.projectSideBar
-      temp.push(sideData)
+      temp.sort(this.sortByDays)
       this.setState({projectSideBar: temp})
-    }
-    let temp = this.state.projectSideBar
-    temp.sort(this.sortByDays)
-    this.setState({projectSideBar: temp})
+    })
   }
 
   sortByDays = (x, y) => {
@@ -270,6 +273,7 @@ class Home extends Component {
       user: this.props.user,
       toggle: this.toggle,
       updateUser: this.props.updateUser,
+      updateUserHome: this.updateUserHome,
     }
     
     const editProjectProps = {
@@ -279,7 +283,7 @@ class Home extends Component {
       editBackdrop: this.state.editBackdrop,
       user: this.props.user,
       updateUser: this.props.updateUser,
-      updateUser1: this.updateUser1,
+      updateUserHome: this.updateUserHome,
     }
 
     return (

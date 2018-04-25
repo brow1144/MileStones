@@ -101,9 +101,8 @@ class AddEvent extends Component {
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then(function (response) {
               let respData = response.data.user
-              console.log(self.props);
-              self.props.updateUser(respData)
-              window.location.reload();
+              self.props.updateUserHome(respData)
+              // window.location.reload();
             })
             .catch(function (error) {
               console.log(error);
