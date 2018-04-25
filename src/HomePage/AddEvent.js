@@ -91,6 +91,8 @@ class AddEvent extends Component {
       'project': {
         'name': ev.target.name.value,
         'dueDate': ev.target.date.value,
+        // 'completed': false,
+        'hidden': false,
         'mileStones': milestones,
       }
     }
