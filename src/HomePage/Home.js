@@ -16,6 +16,7 @@ import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
 import EditProject from './EditProject';
+import Hidden from './Hidden';
 
 import {ListGroup} from 'mdbreact';
 
@@ -44,6 +45,10 @@ class Home extends Component {
       editProject: {},
       editBackdrop: false,
 
+      modalHid: false,
+      hiddenBar: [],
+
+
       colors: [
         '#0099CC', '#00C851', '#673ab7', '#ffa000', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
       ],
@@ -53,6 +58,7 @@ class Home extends Component {
   componentWillMount() {
     this.loadCalendar()
     this.getSideData()
+    this.getHidden()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
@@ -61,6 +67,7 @@ class Home extends Component {
     this.props.updateUser(data)
     this.loadCalendar()
     this.getSideData()
+    this.getHidden()
   }
 
   componentWillUnMount() {
@@ -183,6 +190,32 @@ class Home extends Component {
            day1.getDate() === day2.getDate()
   }
 
+  getHidden= () => {
+    this.setState({hiddenBar: []}, () => {
+      for (let i in this.props.user.projects) {
+        let projects = this.props.user.projects[i]
+
+        let today = new Date()
+        let dueDate = this.convertDate(projects.dueDate)
+
+        let sideData = {} 
+        if (projects.hidden) {
+          sideData = {
+            name: projects.name,
+            dueDate: projects.dueDate,
+            color: '#9e9e9e',
+          }
+          let temp = this.state.hiddenBar
+          temp.push(sideData)
+          this.setState({hiddenBar: temp})
+        }
+      }
+//      let temp = this.state.hiddenBar
+//      temp.sort(this.sortByDays)
+//      this.setState({hiddenBar: temp})
+    })    
+  }
+
   getSideData = () => {
     this.setState({projectSideBar: []}, () => {
       for (let i in this.props.user.projects) {
@@ -261,6 +294,10 @@ class Home extends Component {
     })
   }
 
+  toggleHid = () => {
+    this.setState({modalHid: !this.state.modalHid})
+  }
+
   onClick = () => {
     this.setState({
       collapse: !this.state.collapse,
@@ -303,6 +340,7 @@ class Home extends Component {
       isWideEnough: this.state.isWideEnough,
       onClick: this.onClick,
       toggle: this.toggle,
+      toggleHid: this.toggleHid,
       collapse: this.state.collapse,
       handleSignOut: this.handleSignOut,
     }
@@ -325,6 +363,13 @@ class Home extends Component {
       updateUserHome: this.updateUserHome,
     }
 
+    const hiddenProps = {
+      modalHid: this.state.modalHid,
+      user: this.props.user,
+      toggleHid: this.toggleHid,
+      hiddenBar: this.state.hiddenBar,
+    }
+
     return (
       <div>
           <NavBar {...navProps} />
@@ -342,6 +387,12 @@ class Home extends Component {
               null
             :
               <EditProject {...editProjectProps}/>
+          }
+          {this.state.hiddenBar.length === 0
+          ?
+          null
+          :
+          <Hidden {...hiddenProps}/>
           }
 
           <Row>
