@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 
 import {Button, Modal, ModalBody, ModalHeader, ModalFooter} from 'mdbreact';
+import {Row, Col} from 'reactstrap';
 
 import axios from 'axios';
+import Checkbox from 'material-ui/Checkbox';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import MileStoneCompleted from './MileStoneCompleted';
 
@@ -69,7 +72,6 @@ class EditProject extends Component {
     } 
   }
 
-
   sendUpdatedProject = () => {
     axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
       let self = this;
@@ -87,21 +89,37 @@ class EditProject extends Component {
     });
   }
 
+  hideProject = (ev) => {
+    ev.preventDefault()
+
+    console.log(this.props.editProject)
+  }
+
   render() {
       return (
         <div>
           <Modal backdrop={false} isOpen={this.props.editProjectModal} toggle={this.toggleEditProject}>
-            <ModalHeader toggle={this.toggleEditProject}>Edit {this.props.editProject.name}</ModalHeader>
+            <ModalHeader toggle={this.toggleEditProject}>Edit {this.props.editProject.name} {'  '}        
+            </ModalHeader>
             <ModalBody>
+
               {this.props.editProject.mileStones.map((value, index) => {
                 return (
                   <MileStoneCompleted updateProject={this.updateProject} data={value} key={value.id}/>
                 )
               })}
+
+              <Row>
+                <Col xs='7'/>
+                <Col xs='5'>
+                  <Button onClick={this.hideProject} color="danger">Hide Project</Button>
+                </Col>
+              </Row>
+
             </ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.props.toggleEditProject}>Close</Button>{' '}
-              <Button onClick={this.sendUpdatedProject} color="primary">Save changes</Button>
+              <Button onClick={this.sendUpdatedProject} color="primary">Save</Button>
             </ModalFooter>
           </Modal>
           
