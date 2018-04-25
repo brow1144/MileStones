@@ -12,14 +12,6 @@ cred = credentials.Certificate('./milestones-firebase-sdk.json')
 default_app = firebase_admin.initialize_app(cred) 
 db = firestore.client()
 
-#dueDate = datetime.strptime("4/28/2018", "%m/%d/%Y")
-#dueDate = dueDate - timedelta(days=2)
-#print(dueDate)
-#dueDate = datetime.strptime("Mon, 23 Apr 2018 00:00:00 GMT", "%a, %d %b %Y %H:%M:%S %Z")
-#dueDate = datetime.strptime("04/23/2018", "%m/%d/%Y")
-#print(dueDate)
-
-
 def addUser(user):
     userRef = db.collection('users').document(str(user.id))
     userRef.set({
@@ -69,15 +61,14 @@ def addProject(user,project):
                 project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet + 0.000001))).strftime('%m/%d/%Y')
             else:
                 project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
-            #project.mileStones[i].dueDate = (prevDate - timedelta(days=round(dayDet))).strftime('%m/%d/%Y')
-        #print(project.mileStones[i].dueDate, file=sys.stdout)
+
         dayDet += dayRatio
 
-    #print(project.mileStones, file=sys.stdout)
     projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
     projectRef.set({
         u'name': project.name,
         u'completed': False,
+        u'hidden': False,
         u'id': project.id,
         u'dueDate': project.dueDate,
         u'mileStones': json.loads(json.dumps(project.mileStones,default=obj_dict)),
@@ -86,9 +77,6 @@ def addProject(user,project):
 def getAllProjects(uid):
     projectsRef = db.collection('users').document(uid).collection('projects').get()
     return projectsRef
-
-def addMileStone(uid,pid,mileStone):
-    print('yes')
 
 def getMilestones(uid):
     projectRef = db.collection('users').document(uid).collection('projects').get()
@@ -101,20 +89,14 @@ def getMilestones(uid):
 def getMilestonesByProject(uid,pid):
     milesRef = db.collection('users').document(uid).collection('project').document(pid)
     return milesRef
-
-def updateMilestone(uid,pid,mileStone):
-    # TODO firebase call for updating milestones
-    print(uid,pid,mileStone)
     
 def updateProject(user,project):
     projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
-    print(user.id, file=sys.stdout)
-    print(project.id, file=sys.stdout)
-    print(project.mileStones, file=sys.stdout)
     projectRef.update({
         #u'name': project.name,
         u'completed': project.completed,
+        u'hidden': project.hidden,
         #u'id': project.id,
         #u'dueDate': project.dueDate,
-        u'mileStones': project.mileStones#json.loads(json.dumps(project.mileStones,default=obj_dict)),
+        u'mileStones': project.mileStones,
     })
