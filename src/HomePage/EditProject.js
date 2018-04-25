@@ -39,7 +39,7 @@ class EditProject extends Component {
               'name': this.props.editProject.name,
               'dueDate': this.props.editProject.dueDate,
               'completed': false,
-              'hidden': this.state.checked,
+              'hidden': !this.state.checked,
               'id': this.props.editProject.id, 
               'mileStones': tempMile,
           }
@@ -67,12 +67,12 @@ class EditProject extends Component {
             'dueDate': this.props.editProject.dueDate,
             'completed': true,
             'id': this.props.editProject.id,
-            'hidden': this.state.checked,
+            'hidden': !this.state.checked,
             // Possible Race Condition
             'mileStones': this.props.editProject.mileStones,
         }
       }
-      this.setState({updatedProject: newProject})
+      this.setState({updatedProject: newProject, checked: false})
     } else {
       // console.log(this.state.checked)
       let newProject = {
@@ -90,7 +90,7 @@ class EditProject extends Component {
             'mileStones': this.props.editProject.mileStones,
         }
       }
-      this.setState({updatedProject: newProject})
+      this.setState({updatedProject: newProject, checked: false})
     }
   }
 
@@ -138,7 +138,7 @@ class EditProject extends Component {
                 <Col xs='5'>
                   <MuiThemeProvider>
                     <Checkbox
-                      checked={!this.state.checked}
+                      checked={this.state.checked}
                       onCheck={this.handleCheck}
                       label='Hide Project'
                     />
