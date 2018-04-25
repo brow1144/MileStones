@@ -69,7 +69,9 @@ class Home extends Component {
       let projects = this.props.user.projects[i]
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
+        console.log(mileStones.dueDate)
         let dateObject = this.convertDate(mileStones.dueDate)
+        console.log(dateObject)
         let event = {
           project: projects,
           color: this.state.colors[i],

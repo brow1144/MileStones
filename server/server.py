@@ -95,18 +95,13 @@ def new_project():
     return '', 204
 
 # update a project
-@app.route("/users/projects/update")#, methods=['POST'])
+@app.route("/users/projects/update", methods=['PUT'])
 def update_project():
     j = request.get_json()
     usrJson = j['user']
     projectJson = j['project']
     newUser = obj.User(usrJson['id'], usrJson['name'], [])
     newProject = obj.Project(projectJson['id'], projectJson['name'], projectJson['dueDate'], projectJson['mileStones'], projectJson['completed'])
-    mileStones = projectJson['mileStones']
-    '''for m in mileStones:
-        ms = obj.MileStone(m['id'], m['name'], '', m['completed'])
-        newProject.mileStones.append(ms)'''
-    print(newProject.mileStones, file=sys.stdout)
     fb.updateProject(newUser, newProject)
     return '', 204
 

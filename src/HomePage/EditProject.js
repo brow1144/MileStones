@@ -44,7 +44,7 @@ class EditProject extends Component {
   }
 
   sendUpdatedProject = () => {
-    axios.post('http://localhost:5000/users/projects/add', this.state.updatedProject).then((response) => {
+    axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
       this.props.toggleEditProject()
       let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)

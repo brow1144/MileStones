@@ -60,7 +60,7 @@ def addProject(user,project):
     dayDet = 0
     for i in range(numMileStones-1,-1,-1):
         if dayDet == 0:
-            project.mileStones[i].dueDate = (dueDate - timedelta(days=1)).strftime('%m/%d/%Y')
+            project.mileStones[i].dueDate = (dueDate - timedelta(days=round(1))).strftime('%m/%d/%Y')
             prevDate = prevDate - timedelta(days=round(1))
         else:
             if dayDet > round(dayDet + 0.000001):
@@ -108,6 +108,9 @@ def updateMilestone(uid,pid,mileStone):
     
 def updateProject(user,project):
     projectRef = db.collection('users').document(str(user.id)).collection('projects').document(str(project.id))
+    print(user.id, file=sys.stdout)
+    print(project.id, file=sys.stdout)
+    print(project.mileStones, file=sys.stdout)
     projectRef.update({
         #u'name': project.name,
         u'completed': project.completed,
