@@ -115,15 +115,27 @@ class Home extends Component {
           this.setState({mileStonesCalendar: temp})
         }
         let dateObject = this.convertDate(projects.dueDate)
-        // console.log(dateObject)
-        let event = {
-          project: projects,
-          color: this.state.colors[i],
-          id: index, 
-          title: projects.name,
-          allDay: true,
-          start: dateObject,
-          end: dateObject,
+        let event = {} 
+        if (projects.completed) {
+          event = {
+            project: projects,
+            color: '#9e9e9e',
+            id: index, 
+            title: projects.name,
+            allDay: true,
+            start: dateObject,
+            end: dateObject,
+          }
+        } else { 
+          event = {
+            project: projects,
+            color: this.state.colors[i],
+            id: index, 
+            title: projects.name,
+            allDay: true,
+            start: dateObject,
+            end: dateObject,
+          }
         }
         let temp = this.state.mileStonesCalendar
         temp.push(event)
@@ -181,12 +193,23 @@ class Home extends Component {
         let numberOfDays = this.daysBetween(today, dueDate)
         let milestoneToday = this.getMileStoneToday(projects)
 
-        let sideData = {
-          name: projects.name,
-          dueDate: projects.dueDate,
-          numberOfDays: numberOfDays,
-          mileStoneToday: milestoneToday,
-          color: this.state.colors[i],
+        let sideData = {} 
+        if (projects.completed) {
+          sideData = {
+            name: projects.name,
+            dueDate: projects.dueDate,
+            numberOfDays: numberOfDays,
+            mileStoneToday: milestoneToday,
+            color: '#9e9e9e',
+          }
+        } else { 
+          sideData = {
+            name: projects.name,
+            dueDate: projects.dueDate,
+            numberOfDays: numberOfDays,
+            mileStoneToday: milestoneToday,
+            color: this.state.colors[i],
+          }
         }
 
         let temp = this.state.projectSideBar

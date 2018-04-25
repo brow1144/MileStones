@@ -17,10 +17,12 @@ class EditProject extends Component {
   }
 
   updateProject = (milestone) => {
+    let project = []
     for (let i in this.props.editProject.mileStones) {
       let id = this.props.editProject.mileStones[i].id
       if (milestone.id === id) {
         let tempMile = this.props.editProject.mileStones
+        project = tempMile
         tempMile[i] = milestone
 
         let newProject = {
@@ -31,7 +33,7 @@ class EditProject extends Component {
           'project': {
               'name': this.props.editProject.name,
               'dueDate': this.props.editProject.dueDate,
-              'completed': this.props.editProject.completed,
+              'completed': false,
               'id': this.props.editProject.id, 
               'mileStones': tempMile,
           }
@@ -39,7 +41,32 @@ class EditProject extends Component {
         this.setState({updatedProject: newProject})
       }
     }
+    
+    let completed = false
+    for (let j in project) {
+      if (project[j].completed === true) completed = true
+      else return false
+    }
+    
+    if (completed) {
+      let newProject = {
+        'user': {
+            'id': this.props.user.id,
+            'name': this.props.user.name
+        },
+        'project': {
+            'name': this.props.editProject.name,
+            'dueDate': this.props.editProject.dueDate,
+            'completed': true,
+            'id': this.props.editProject.id, 
+            // Possible Race Condition
+            'mileStones': this.props.editProject.mileStones,
+        }
+      }
+      this.setState({updatedProject: newProject})
+    } 
   }
+
 
   sendUpdatedProject = () => {
     axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
