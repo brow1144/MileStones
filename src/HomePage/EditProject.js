@@ -49,7 +49,7 @@ class EditProject extends Component {
               let respData = response.data.user
               self.props.updateUser(respData)
               self.props.toggleEditProject()
-              window.location.reload();
+              // window.location.reload();
             })
             .catch((error) => {
               console.log(error);

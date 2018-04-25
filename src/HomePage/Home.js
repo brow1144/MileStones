@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
 
 import {Row, Col} from 'reactstrap';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
 
 import './Home.css';
 import 'font-awesome/css/font-awesome.min.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import moment from 'moment';
 
 import { fireauth } from "../base";
 // import axios from 'axios';
+
+import BigCalendar from 'react-big-calendar';
 
 import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
@@ -17,6 +18,8 @@ import AddEvent from './AddEvent';
 import EditProject from './EditProject';
 
 import {ListGroup} from 'mdbreact';
+
+// import axios from 'axios';
 
 // import {User, Project, MileStone} from '../Objects';
 
@@ -52,6 +55,12 @@ class Home extends Component {
     this.getSideData()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if(previousState !== this.props.data) {
+      this.loadCalendar()
+    }
   }
 
   componentWillUnMount() {
@@ -221,9 +230,10 @@ class Home extends Component {
   };
 
   handleSignOut = () => {
-    localStorage.removeItem('uid');
-    this.firebaseOut();
-    window.location.reload();
+    localStorage.removeItem('uid')
+    sessionStorage.removeItem('user')
+    this.firebaseOut()
+    window.location.reload()
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {

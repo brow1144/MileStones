@@ -4,7 +4,7 @@ import {ListGroupItem} from 'mdbreact';
 
 const SideEvents = (props) => {
   return (
-    <ListGroupItem style={{color: `${props.project.color}`}} href="/">
+    <ListGroupItem style={{color: `${props.project.color}`, cursor: 'auto'}} href="#">
       <div className="d-flex w-100 justify-content-between">
         <h5 className="mb-1">{props.project.name}</h5>
         <small>{props.project.numberOfDays} days to go</small>
