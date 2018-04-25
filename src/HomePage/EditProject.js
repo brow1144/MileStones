@@ -47,7 +47,7 @@ class EditProject extends Component {
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then((response) => {
               let respData = response.data.user
-              self.props.updateUser(respData)
+              self.props.updateUser1(respData)
               self.props.toggleEditProject()
               // window.location.reload();
             })

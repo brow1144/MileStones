@@ -57,10 +57,9 @@ class Home extends Component {
     window.addEventListener('resize', this.handleWindowChange);
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    if(previousState !== this.props.data) {
-      this.loadCalendar()
-    }
+  updateUser1 = (data) => {
+    this.props.updateUser(data)
+    this.loadCalendar()
   }
 
   componentWillUnMount() {
@@ -68,50 +67,53 @@ class Home extends Component {
   }
 
   loadCalendar = () => {
-    for (let i in this.props.user.projects) {
-      let projects = this.props.user.projects[i]
-      for (let j in projects.mileStones) {
-        let mileStones = projects.mileStones[j]
-        let dateObject = this.convertDate(mileStones.dueDate)
-        let event
-        if(projects.mileStones[j].completed) {
-          event = {
-            project: projects,
-            color: '#9e9e9e',
-            id: j, 
-            title: mileStones.name,
-            allDay: true,
-            start: dateObject,
-            end: dateObject,
+    this.setState({mileStonesCalendar: []}, () => {
+      for (let i in this.props.user.projects) {
+        let projects = this.props.user.projects[i]
+        for (let j in projects.mileStones) {
+          let mileStones = projects.mileStones[j]
+          let dateObject = this.convertDate(mileStones.dueDate)
+          let event
+          if(projects.mileStones[j].completed) {
+            event = {
+              project: projects,
+              color: '#9e9e9e',
+              id: j, 
+              title: mileStones.name,
+              allDay: true,
+              start: dateObject,
+              end: dateObject,
+            }
           }
-        }
-        else if (this.datePassed(projects.mileStones[j].dueDate)) {
-          event = {
-            project: projects,
-            color: '#b71c1c',
-            id: j, 
-            title: mileStones.name,
-            allDay: true,
-            start: dateObject,
-            end: dateObject,
+          else if (this.datePassed(projects.mileStones[j].dueDate)) {
+            event = {
+              project: projects,
+              color: '#b71c1c',
+              id: j, 
+              title: mileStones.name,
+              allDay: true,
+              start: dateObject,
+              end: dateObject,
+            }
           }
-        }
-        else {
-          event = {
-            project: projects,
-            color: this.state.colors[i],
-            id: j, 
-            title: mileStones.name,
-            allDay: true,
-            start: dateObject,
-            end: dateObject,
+          else {
+            event = {
+              project: projects,
+              color: this.state.colors[i],
+              id: j, 
+              title: mileStones.name,
+              allDay: true,
+              start: dateObject,
+              end: dateObject,
+            }
           }
+          let temp = this.state.mileStonesCalendar
+          temp.push(event)
+          this.setState({mileStonesCalendar: temp})
         }
-        let temp = this.state.mileStonesCalendar
-        temp.push(event)
-        this.setState({mileStonesCalendar: temp})
       }
-    }
+    })
+ 
   }
 
   convertDate = (date) => {
@@ -277,6 +279,7 @@ class Home extends Component {
       editBackdrop: this.state.editBackdrop,
       user: this.props.user,
       updateUser: this.props.updateUser,
+      updateUser1: this.updateUser1,
     }
 
     return (

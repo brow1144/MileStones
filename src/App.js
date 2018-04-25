@@ -25,13 +25,11 @@ class App extends Component {
   }
 
   updateUser = (data) => {
-    // this.setState({user: data})
-    this.saveUser(data)
+    this.setState({user: data})
   }
 
   componentWillMount() {
     this.getUserFromLocalStorage();
-    this.getUserObjectFromSessionStorage();
     let self = this;
     firebase.auth().onAuthStateChanged(
       (user) => {
@@ -43,8 +41,8 @@ class App extends Component {
             .then(function (response) {
               let respData = response.data.user;
               // console.log(respData)
-              self.saveUser(respData)
-              // self.setState({user: respData})
+              //self.saveUser(respData)
+               self.setState({user: respData})
             })
             .catch(function (error) {
               console.log(error);
@@ -69,17 +67,6 @@ class App extends Component {
     localStorage.setItem('uid', user.uid);
     this.setState({uid: user.uid})
   };
-
-  getUserObjectFromSessionStorage = () => {
-    const user = JSON.parse(sessionStorage.getItem('user'))
-    if (!user) return;
-    this.setState({user})
-  }
-
-  saveUser = (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
-    this.setState({user: user})
-  }
 
   signedIn = () => {
     return this.state.uid
