@@ -42,7 +42,7 @@ class Home extends Component {
       editBackdrop: false,
 
       colors: [
-        '#0099CC', '#00C851', '#9933CC', '#ff4444', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
+        '#0099CC', '#00C851', '#673ab7', '#ffa000', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
       ],
     }
   }
@@ -71,20 +71,53 @@ class Home extends Component {
       for (let j in projects.mileStones) {
         let mileStones = projects.mileStones[j]
         let dateObject = this.convertDate(mileStones.dueDate)
-        let event = {
-          project: projects,
-          color: this.state.colors[i],
-          id: j, 
-          title: mileStones.name,
-          allDay: true,
-          start: dateObject,
-          end: dateObject,
+        let event
+        if(projects.mileStones[j].completed) {
+          event = {
+            project: projects,
+            color: '#9e9e9e',
+            id: j, 
+            title: mileStones.name,
+            allDay: true,
+            start: dateObject,
+            end: dateObject,
+          }
+        }
+        else if (this.datePassed(projects.mileStones[j].dueDate)) {
+          event = {
+            project: projects,
+            color: '#b71c1c',
+            id: j, 
+            title: mileStones.name,
+            allDay: true,
+            start: dateObject,
+            end: dateObject,
+          }
+        }
+        else {
+          event = {
+            project: projects,
+            color: this.state.colors[i],
+            id: j, 
+            title: mileStones.name,
+            allDay: true,
+            start: dateObject,
+            end: dateObject,
+          }
         }
         let temp = this.state.mileStonesCalendar
         temp.push(event)
         this.setState({mileStonesCalendar: temp})
       }
     }
+  }
+
+  datePassed = (date) => {
+    let newDate = this.convertDate(date)
+    if (newDate < Date.now())
+      return true
+    else 
+      return false 
   }
 
   daysBetween = (date1, date2) => {
