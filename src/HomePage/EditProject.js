@@ -138,7 +138,7 @@ class EditProject extends Component {
                 <Col xs='5'>
                   <MuiThemeProvider>
                     <Checkbox
-                      checked={this.state.checked}
+                      checked={!this.state.checked}
                       onCheck={this.handleCheck}
                       label='Hide Project'
                     />
