@@ -71,6 +71,7 @@ class Home extends Component {
     this.setState({mileStonesCalendar: []}, () => {
       for (let i in this.props.user.projects) {
         let projects = this.props.user.projects[i]
+        let index = 0;
         for (let j in projects.mileStones) {
           let mileStones = projects.mileStones[j]
           let dateObject = this.convertDate(mileStones.dueDate)
@@ -108,10 +109,25 @@ class Home extends Component {
               end: dateObject,
             }
           }
+          index = j;
           let temp = this.state.mileStonesCalendar
           temp.push(event)
           this.setState({mileStonesCalendar: temp})
         }
+        let dateObject = this.convertDate(projects.dueDate)
+        // console.log(dateObject)
+        let event = {
+          project: projects,
+          color: this.state.colors[i],
+          id: index, 
+          title: projects.name,
+          allDay: true,
+          start: dateObject,
+          end: dateObject,
+        }
+        let temp = this.state.mileStonesCalendar
+        temp.push(event)
+        this.setState({mileStonesCalendar: temp})
       }
     })
  
