@@ -96,11 +96,10 @@ class AddEvent extends Component {
         'mileStones': milestones,
       }
     }
-    
+    let self = this
     axios.post('http://localhost:5000/users/projects/add', data).then((response) => {
       this.props.toggle()
-      let self = this;
-          axios.get(`http://localhost:5000/users/${this.props.user.id}`)
+          axios.get(`http://localhost:5000/users/${self.props.user.id}`)
             .then(function (response) {
               let respData = response.data.user
               self.props.updateUserHome(respData)
@@ -110,7 +109,7 @@ class AddEvent extends Component {
               console.log(error);
             });
     }).catch(function (error) {
-        this.setState({visible: true, errorMessage: error.message})
+        self.setState({visible: true, errorMessage: error.message})
     });
   }
 
