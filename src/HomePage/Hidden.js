@@ -32,8 +32,14 @@ class Hidden extends Component {
               'mileStones': this.props.projects[i].mileStones,
           }
         }
+        let newUser = this.props.user;
+        newUser.projects[i] = newProject.project;
+        this.props.updateUser(newUser);
+        this.props.loadCalendar()
+        this.props.getSideData()
         this.setState({updatedProject: newProject}, () => {
-            this.sendUpdatedProject()
+            this.sendUpdatedProject();
+            this.props.toggleHid();
         })
       }
     }
@@ -46,7 +52,6 @@ class Hidden extends Component {
             .then((response) => {
               let respData = response.data.user
               self.props.updateUserHome(respData)
-              self.props.toggleHid()
             })
             .catch((error) => {
               console.log(error);

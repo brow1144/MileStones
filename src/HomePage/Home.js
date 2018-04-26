@@ -431,7 +431,10 @@ class Home extends Component {
       user: this.props.user,
       toggleHid: this.toggleHid,
       hiddenBar: this.state.hiddenBar,
+      loadCalendar: this.loadCalendar,
+      getSideData: this.getSideData,
       projects: this.props.user.projects,
+      updateUser: this.props.updateUser,
       updateUserHome: this.updateUserHome,
     }
 
