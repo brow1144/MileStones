@@ -37,7 +37,7 @@ class App extends Component {
           // finished signing in
           self.authHandler(user)
           // get user data from database
-          axios.get(`http://localhost:5000/users/${self.state.uid}`)
+          axios.get(`https://milestones.mybluemix.net/users/${self.state.uid}`)
             .then(function (response) {
               let respData = response.data.user;
                self.setState({user: respData})

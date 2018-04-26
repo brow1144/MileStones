@@ -119,9 +119,9 @@ class EditProject extends Component {
   }
 
   sendUpdatedProject = () => {
-    axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
+    axios.put('https://milestones.mybluemix.net/users/projects/update', this.state.updatedProject).then((response) => {
       let self = this;
-          axios.get(`http://localhost:5000/users/${this.props.user.id}`)
+          axios.get(`https://milestones.mybluemix.net/users/${this.props.user.id}`)
             .then((response) => {
               let respData = response.data.user
               self.setState({checked: false});
