@@ -192,6 +192,7 @@ class Home extends Component {
             'project': {
                 'name': projects.name,
                 'dueDate': projects.dueDate,
+                'hidden': projects.hidden,
                 'completed': projects.completed,
                 'id': projects.id, 
                 'mileStones': projects.mileStones,
