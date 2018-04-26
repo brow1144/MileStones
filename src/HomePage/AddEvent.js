@@ -97,9 +97,9 @@ class AddEvent extends Component {
       }
     }
     let self = this
-    axios.post('http://localhost:5000/users/projects/add', data).then((response) => {
+    axios.post('https://milestones.mybluemix.net/users/projects/add', data).then((response) => {
       this.props.toggle()
-          axios.get(`http://localhost:5000/users/${self.props.user.id}`)
+          axios.get(`https://milestones.mybluemix.net/users/${self.props.user.id}`)
             .then(function (response) {
               let respData = response.data.user
               self.props.updateUserHome(respData)

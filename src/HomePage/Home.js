@@ -83,8 +83,8 @@ class Home extends Component {
   }
 
   sendUpdatedProject = (project) => {
-    axios.put('http://localhost:5000/users/projects/update', project).then((response) => {
-          axios.get(`http://localhost:5000/users/${this.props.user.id}`)
+    axios.put('https://milestones.mybluemix.net/users/projects/update', project).then((response) => {
+          axios.get(`https://milestones.mybluemix.net/users/${this.props.user.id}`)
             .then((response) => {
               //console.log(response);
             })
