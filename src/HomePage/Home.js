@@ -10,6 +10,10 @@ import moment from 'moment';
 import { fireauth } from "../base";
 // import axios from 'axios';
 
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+
 import BigCalendar from 'react-big-calendar';
 
 import SideEvents from'./SideEvents';
@@ -19,9 +23,13 @@ import EditProject from './EditProject';
 
 import {ListGroup} from 'mdbreact';
 
-// import axios from 'axios';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
+
+import axios from 'axios';
 
 // import {User, Project, MileStone} from '../Objects';
+
+const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
 BigCalendar.momentLocalizer(moment);
 
@@ -67,6 +75,22 @@ class Home extends Component {
     window.removeEventListener('resize', this.handleWindowChange)
   }
 
+  sendUpdatedProject = (project) => {
+    axios.put('http://localhost:5000/users/projects/update', project).then((response) => {
+      let self = this;
+          axios.get(`http://localhost:5000/users/${this.props.user.id}`)
+            .then((response) => {
+              let respData = response.data.user
+              this.updateUserHome(respData)
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+    }).catch((error) => {
+        console.log(error.message)
+    });
+  }
+
   loadCalendar = () => {
     this.setState({mileStonesCalendar: []}, () => {
       for (let i in this.props.user.projects) {
@@ -91,7 +115,7 @@ class Home extends Component {
             event = {
               project: projects,
               color: '#b71c1c',
-              id: j, 
+              id: mileStones.id, 
               title: mileStones.name,
               allDay: true,
               start: dateObject,
@@ -102,7 +126,7 @@ class Home extends Component {
             event = {
               project: projects,
               color: this.state.colors[i],
-              id: j, 
+              id: mileStones.id, 
               title: mileStones.name,
               allDay: true,
               start: dateObject,
@@ -120,7 +144,7 @@ class Home extends Component {
           event = {
             project: projects,
             color: '#9e9e9e',
-            id: index, 
+            id: projects.id, 
             title: projects.name,
             allDay: true,
             start: dateObject,
@@ -130,7 +154,7 @@ class Home extends Component {
           event = {
             project: projects,
             color: this.state.colors[i],
-            id: index, 
+            id: projects.id, 
             title: projects.name,
             allDay: true,
             start: dateObject,
@@ -143,6 +167,36 @@ class Home extends Component {
       }
     })
  
+  }
+
+  moveEvent = ({event, start, end}) => {
+    let mid = event.id;
+    let month = start.getMonth() + 1;
+    let day = start.getDate();
+    let newDate = `${month}/${day}/${start.getFullYear()}`;
+    for (let i in this.props.user.projects) {
+      let projects = this.props.user.projects[i]
+      for (let j in projects.mileStones) {
+        if(projects.mileStones[j].id === mid) {
+          projects.mileStones[j].dueDate = newDate;
+          let newProject = {
+            'user': {
+                'id': this.props.user.id,
+                'name': this.props.user.name
+            },
+            'project': {
+                'name': projects.name,
+                'dueDate': projects.dueDate,
+                'completed': projects.completed,
+                'id': projects.id, 
+                'mileStones': projects.mileStones,
+            }
+          }
+          this.sendUpdatedProject(newProject);
+          return;
+        }
+      }
+    }
   }
 
   convertDate = (date) => {
@@ -347,10 +401,11 @@ class Home extends Component {
           <Row>
             <Col xs='1' md='1'/>
             <Col xs='10' md='7'> 
-              <BigCalendar
+              <DragAndDropCalendar
                 toolbar={this.state.toolbar}
                 selectable
                 events={this.state.mileStonesCalendar}
+                onEventDrop={this.moveEvent}
                 style={calendarStyles}
                 defaultDate={new Date()}
                 eventPropGetter={(this.eventStyleGetter)}
@@ -390,4 +445,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default DragDropContext(HTML5Backend)(Home);
