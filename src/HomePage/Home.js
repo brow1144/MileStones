@@ -377,7 +377,7 @@ class Home extends Component {
     localStorage.removeItem('uid')
     sessionStorage.removeItem('user')
     this.firebaseOut()
-    window.location.reload()
+    // window.location.reload()
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {

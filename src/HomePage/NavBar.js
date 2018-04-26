@@ -2,7 +2,9 @@ import React from 'react';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import {Navbar, NavbarBrand, Collapse, NavbarNav, NavItem, NavLink, NavbarToggler,} from 'mdbreact';
+import './NavBar.css';
+
+import {Navbar, NavbarBrand, Collapse, NavbarNav, NavItem, NavLink, NavbarToggler } from 'mdbreact';
 
 const NavBar = (props) => {
   return (
@@ -20,8 +22,8 @@ const NavBar = (props) => {
             <NavItem onClick={props.toggleHid} style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}} >
               <NavLink className="nav-link" to="/MileStones/Home">Hidden Projects</NavLink>            
             </NavItem>
-            <NavItem style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}}>
-              <NavLink onClick={props.handleSignOut} className="nav-link" to="">Sign Out</NavLink>
+            <NavItem onClick={props.handleSignOut}>
+              <i className="fas fa-sign-out-alt signOut" />
             </NavItem>
           </NavbarNav>
         </Collapse>
