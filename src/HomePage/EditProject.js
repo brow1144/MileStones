@@ -44,15 +44,55 @@ class EditProject extends Component {
               'mileStones': tempMile,
           }
         }
-        console.log(newProject)
-        this.setState({updatedProject: newProject})
+        this.setState({updatedProject: newProject}, () => {
+          let completed = false
+          for (let j in project) {
+            if (project[j].completed === true) completed = true
+            else return false
+          }
+          
+          if (completed) {
+            let newProject = {
+              'user': {
+                  'id': this.props.user.id,
+                  'name': this.props.user.name
+              },
+              'project': {
+                  'name': this.props.editProject.name,
+                  'dueDate': this.props.editProject.dueDate,
+                  'completed': true,
+                  'id': this.props.editProject.id,
+                  'hidden': this.state.checked,
+                  // Possible Race Condition
+                  'mileStones': this.props.editProject.mileStones,
+              }
+            }
+            this.setState({updatedProject: newProject})
+          } else {
+            let newProject = {
+              'user': {
+                  'id': this.props.user.id,
+                  'name': this.props.user.name
+              },
+              'project': {
+                  'name': this.props.editProject.name,
+                  'dueDate': this.props.editProject.dueDate,
+                  'completed': false,
+                  'id': this.props.editProject.id,
+                  'hidden': this.state.checked,
+                  // Possible Race Condition
+                  'mileStones': this.props.editProject.mileStones,
+              }
+            }
+            this.setState({updatedProject: newProject})
+          }
+        })
       }
     }
   
-    
     let completed = false
-    for (let j in project) {
-      if (project[j].completed === true) completed = true
+    for (let j in this.props.editProject.mileStones) {
+      if (this.props.editProject.mileStones[j].completed === true) completed = true
       else return false
     }
     
@@ -74,7 +114,6 @@ class EditProject extends Component {
       }
       this.setState({updatedProject: newProject})
     } else {
-      // console.log(this.state.checked)
       let newProject = {
         'user': {
             'id': this.props.user.id,
