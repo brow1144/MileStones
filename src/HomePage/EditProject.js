@@ -46,11 +46,8 @@ class EditProject extends Component {
         }
         this.setState({updatedProject: newProject}, () => {
           let completed = false
-          for (let j in project) {
-            if (project[j].completed === true) completed = true
-            else return false
-          }
-          
+          completed = this.checkIfAllCompleted(this.props.editProject.mileStones)
+
           if (completed) {
             let newProject = {
               'user': {
@@ -67,7 +64,7 @@ class EditProject extends Component {
                   'mileStones': this.props.editProject.mileStones,
               }
             }
-            this.setState({updatedProject: newProject})
+            this.setState({updatedProject: newProject}, () => {return})
           } else {
             let newProject = {
               'user': {
@@ -84,17 +81,15 @@ class EditProject extends Component {
                   'mileStones': this.props.editProject.mileStones,
               }
             }
-            this.setState({updatedProject: newProject})
+            this.setState({updatedProject: newProject}, () => {return})
           }
         })
       }
     }
   
     let completed = false
-    for (let j in this.props.editProject.mileStones) {
-      if (this.props.editProject.mileStones[j].completed === true) completed = true
-      else return false
-    }
+    completed = this.checkIfAllCompleted(this.props.editProject.mileStones)
+  
     
     if (completed) {
       let newProject = {
@@ -131,6 +126,15 @@ class EditProject extends Component {
       }
       this.setState({updatedProject: newProject})
     }
+  }
+
+  checkIfAllCompleted = (milestones) => {
+    let completed = false
+    for (let j in milestones) {
+      if (milestones[j].completed === true) completed = true
+      else return false
+    }
+    return true
   }
 
   sendUpdatedProject = () => {
