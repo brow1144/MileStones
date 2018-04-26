@@ -119,6 +119,18 @@ class EditProject extends Component {
   }
 
   sendUpdatedProject = () => {
+    let newUser = this.props.user;
+    for (let i in this.props.user.projects) {
+      let id = this.props.user.projects[i].id;
+      if(id == this.state.updatedProject.project.id) {
+        newUser.projects[i] = this.state.updatedProject.project;
+        break;
+      }
+    }
+    this.props.updateUser(newUser);
+    this.props.loadCalendar();
+    this.props.getSideData();
+    this.props.toggleEditProject();
     axios.put('https://milestones.mybluemix.net/users/projects/update', this.state.updatedProject).then((response) => {
       let self = this;
           axios.get(`https://milestones.mybluemix.net/users/${this.props.user.id}`)
@@ -126,7 +138,6 @@ class EditProject extends Component {
               let respData = response.data.user
               self.setState({checked: false});
               self.props.updateUserHome(respData)
-              self.props.toggleEditProject()
             })
             .catch((error) => {
               console.log(error);

@@ -424,6 +424,8 @@ class Home extends Component {
       user: this.props.user,
       updateUser: this.props.updateUser,
       updateUserHome: this.updateUserHome,
+      loadCalendar: this.loadCalendar,
+      getSideData: this.getSideData,
     }
 
     const hiddenProps = {
