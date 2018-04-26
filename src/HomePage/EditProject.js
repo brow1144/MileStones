@@ -22,7 +22,6 @@ class EditProject extends Component {
 
   updateProject = (milestone) => {
     let project = []
-    // console.log(this.props.editProject)
     for (let i in this.props.editProject.mileStones) {
       let id = this.props.editProject.mileStones[i].id
       if (milestone.id === id) {
@@ -30,60 +29,44 @@ class EditProject extends Component {
         project = tempMile
         tempMile[i] = milestone
 
-        let newProject = {
-          'user': {
-              'id': this.props.user.id,
-              'name': this.props.user.name
-          },
-          'project': {
-              'name': this.props.editProject.name,
-              'dueDate': this.props.editProject.dueDate,
-              'completed': false,
-              'hidden': this.state.checked,
-              'id': this.props.editProject.id, 
-              'mileStones': tempMile,
-          }
-        }
-        this.setState({updatedProject: newProject}, () => {
-          let completed = false
-          completed = this.checkIfAllCompleted(this.props.editProject.mileStones)
+        let completed = false
+        completed = this.checkIfAllCompleted(project)
 
-          if (completed) {
-            let newProject = {
-              'user': {
-                  'id': this.props.user.id,
-                  'name': this.props.user.name
-              },
-              'project': {
-                  'name': this.props.editProject.name,
-                  'dueDate': this.props.editProject.dueDate,
-                  'completed': true,
-                  'id': this.props.editProject.id,
-                  'hidden': this.state.checked,
-                  // Possible Race Condition
-                  'mileStones': this.props.editProject.mileStones,
-              }
+        if (completed) {
+          let newProject = {
+            'user': {
+                'id': this.props.user.id,
+                'name': this.props.user.name
+            },
+            'project': {
+                'name': this.props.editProject.name,
+                'dueDate': this.props.editProject.dueDate,
+                'completed': true,
+                'id': this.props.editProject.id,
+                'hidden': this.state.checked,
+                // Possible Race Condition
+                'mileStones': this.props.editProject.mileStones,
             }
-            this.setState({updatedProject: newProject}, () => {return})
-          } else {
-            let newProject = {
-              'user': {
-                  'id': this.props.user.id,
-                  'name': this.props.user.name
-              },
-              'project': {
-                  'name': this.props.editProject.name,
-                  'dueDate': this.props.editProject.dueDate,
-                  'completed': false,
-                  'id': this.props.editProject.id,
-                  'hidden': this.state.checked,
-                  // Possible Race Condition
-                  'mileStones': this.props.editProject.mileStones,
-              }
-            }
-            this.setState({updatedProject: newProject}, () => {return})
           }
-        })
+          this.setState({updatedProject: newProject}, () => {return})
+        } else {
+          let newProject = {
+            'user': {
+                'id': this.props.user.id,
+                'name': this.props.user.name
+            },
+            'project': {
+                'name': this.props.editProject.name,
+                'dueDate': this.props.editProject.dueDate,
+                'completed': false,
+                'id': this.props.editProject.id,
+                'hidden': this.state.checked,
+                // Possible Race Condition
+                'mileStones': this.props.editProject.mileStones,
+            }
+          }
+          this.setState({updatedProject: newProject}, () => {return})
+        } 
       }
     }
   
@@ -129,16 +112,13 @@ class EditProject extends Component {
   }
 
   checkIfAllCompleted = (milestones) => {
-    let completed = false
     for (let j in milestones) {
-      if (milestones[j].completed === true) completed = true
-      else return false
+      if (milestones[j].completed !== true) return false
     }
     return true
   }
 
   sendUpdatedProject = () => {
-    console.log(this.state.updatedProject)
     axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
       let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)

@@ -84,7 +84,6 @@ class Home extends Component {
 
   sendUpdatedProject = (project) => {
     axios.put('http://localhost:5000/users/projects/update', project).then((response) => {
-      let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then((response) => {
               console.log(response);
@@ -253,8 +252,8 @@ class Home extends Component {
       for (let i in this.props.user.projects) {
         let projects = this.props.user.projects[i]
 
-        let today = new Date()
-        let dueDate = this.convertDate(projects.dueDate)
+        // let today = new Date()
+        // let dueDate = this.convertDate(projects.dueDate)
 
         let sideData = {} 
         if (projects.hidden) {
