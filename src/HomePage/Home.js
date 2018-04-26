@@ -80,8 +80,7 @@ class Home extends Component {
       let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then((response) => {
-              let respData = response.data.user
-              this.updateUserHome(respData)
+              console.log(response);
             })
             .catch((error) => {
               console.log(error);
@@ -174,6 +173,7 @@ class Home extends Component {
     let month = start.getMonth() + 1;
     let day = start.getDate();
     let newDate = `${month}/${day}/${start.getFullYear()}`;
+
     for (let i in this.props.user.projects) {
       let projects = this.props.user.projects[i]
       for (let j in projects.mileStones) {
@@ -192,6 +192,11 @@ class Home extends Component {
                 'mileStones': projects.mileStones,
             }
           }
+
+          let newUser = this.props.user;
+          newUser.projects[i].mileStones[j].dueDate = newDate;
+          this.props.updateUser(newUser);
+          this.loadCalendar()
           this.sendUpdatedProject(newProject);
           return;
         }
