@@ -103,6 +103,10 @@ class AddEvent extends Component {
             .then(function (response) {
               let respData = response.data.user
               self.props.updateUserHome(respData)
+              self.setState({
+                milestoneTitle: '',
+                milestones: [''],
+              })
               // window.location.reload();
             })
             .catch(function (error) {
