@@ -86,7 +86,7 @@ class Home extends Component {
     axios.put('http://localhost:5000/users/projects/update', project).then((response) => {
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
             .then((response) => {
-              console.log(response);
+              //console.log(response);
             })
             .catch((error) => {
               console.log(error);

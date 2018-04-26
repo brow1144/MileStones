@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
-
-import moment from 'moment';
 import axios from 'axios';
 
-import {Button, Modal, ModalBody, ModalHeader, ModalFooter, Input, ListGroupItem, ListGroup } from 'mdbreact';
-import {Row, Col, Form, Alert} from 'reactstrap';
+import {Modal, ModalBody, ModalHeader, ListGroupItem, ListGroup } from 'mdbreact';
+import {Row, Col} from 'reactstrap';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
-import MileStoneName from './MileStoneName';
 
 class Hidden extends Component {
 
