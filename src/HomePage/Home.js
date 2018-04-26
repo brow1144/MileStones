@@ -203,6 +203,7 @@ class Home extends Component {
         if (projects.hidden) {
           sideData = {
             name: projects.name,
+            id: projects.id,
             dueDate: projects.dueDate,
             color: '#9e9e9e',
           }
@@ -372,6 +373,8 @@ class Home extends Component {
       user: this.props.user,
       toggleHid: this.toggleHid,
       hiddenBar: this.state.hiddenBar,
+      projects: this.props.user.projects,
+      updateUserHome: this.updateUserHome,
     }
 
     return (

@@ -95,7 +95,6 @@ class EditProject extends Component {
   }
 
   sendUpdatedProject = () => {
-    console.log(this.state.updatedProject)
     axios.put('http://localhost:5000/users/projects/update', this.state.updatedProject).then((response) => {
       let self = this;
           axios.get(`http://localhost:5000/users/${this.props.user.id}`)
@@ -111,6 +110,7 @@ class EditProject extends Component {
         console.log(error.message)
     });
   }
+  
 
   handleCheck = () => {
     this.setState({checked: !this.state.checked})
