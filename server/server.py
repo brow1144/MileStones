@@ -85,7 +85,7 @@ def new_project():
     projectJson = j['project']
     newUser = obj.User(usrJson['id'], usrJson['name'], [])
     pId = fb.idGenerator()
-    newProject = obj.Project(pId, projectJson['name'], projectJson['dueDate'], [], False)
+    newProject = obj.Project(pId, projectJson['name'], projectJson['dueDate'], [], False, False)
     mileStones = projectJson['mileStones']
     for m in mileStones:
         mID = fb.idGenerator()
@@ -101,15 +101,6 @@ def update_project():
     usrJson = j['user']
     projectJson = j['project']
     newUser = obj.User(usrJson['id'], usrJson['name'], [])
-    newProject = obj.Project(projectJson['id'], projectJson['name'], projectJson['dueDate'], projectJson['mileStones'], projectJson['completed'])
+    newProject = obj.Project(projectJson['id'], projectJson['name'], projectJson['dueDate'], projectJson['mileStones'], projectJson['completed'], projectJson['hidden'])
     fb.updateProject(newUser, newProject)
-    return '', 204
-
-# update mileStone
-@app.route("/users/projects/mileStone", methods=['PUT'])
-def update_mileStone():
-    j = request.get_json()
-    mileJson = j['mileStone']
-    ms = obj.MileStone(mileJson['id'], mileJson['json'],mileJson['dueDate'], mileJson['completed'])
-    fb.updateMilestone(j['uid'], j['pid'], ms)
     return '', 204

@@ -91,6 +91,8 @@ class AddEvent extends Component {
       'project': {
         'name': ev.target.name.value,
         'dueDate': ev.target.date.value,
+        // 'completed': false,
+        'hidden': false,
         'mileStones': milestones,
       }
     }
@@ -124,7 +126,7 @@ class AddEvent extends Component {
     return (
       <Modal backdrop={false} isOpen={this.props.modal} size='lg' toggle={this.props.toggle}>
         <Form onSubmit={this.sendMilestones}>
-          <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>Add Project</ModalHeader>
           <ModalBody>
             <Alert color="primary" isOpen={this.state.visible} toggle={this.onDismiss}>
               {this.state.errorMessage}

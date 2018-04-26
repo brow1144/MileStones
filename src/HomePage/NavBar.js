@@ -17,6 +17,9 @@ const NavBar = (props) => {
             <NavItem onClick={props.toggle} style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}} >
               <NavLink className="nav-link" to="/MileStones/Home">Add Project</NavLink>            
             </NavItem>
+            <NavItem onClick={props.toggleHid} style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}} >
+              <NavLink className="nav-link" to="/MileStones/Home">Hidden Projects</NavLink>            
+            </NavItem>
             <NavItem style={{fontSize: '1.5em', cursor: 'pointer', color: '#2196f3'}}>
               <NavLink onClick={props.handleSignOut} className="nav-link" to="">Sign Out</NavLink>
             </NavItem>

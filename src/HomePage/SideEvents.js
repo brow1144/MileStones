@@ -15,7 +15,7 @@ const SideEvents = (props) => {
         <p className="mb-1">No MileStones to work on today!</p>
       :
         <p className="mb-1">Make sure to work on the 
-        <b> {props.project.mileStoneToday} </b>
+        <b> {this.props.project.mileStoneToday} </b>
         milestone today!</p>
       }
 

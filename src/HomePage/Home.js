@@ -20,6 +20,7 @@ import SideEvents from'./SideEvents';
 import NavBar from './NavBar'
 import AddEvent from './AddEvent';
 import EditProject from './EditProject';
+import Hidden from './Hidden';
 
 import {ListGroup} from 'mdbreact';
 
@@ -52,6 +53,10 @@ class Home extends Component {
       editProject: {},
       editBackdrop: false,
 
+      modalHid: false,
+      hiddenBar: [],
+
+
       colors: [
         '#0099CC', '#00C851', '#673ab7', '#ffa000', '#3F729B', '#ffbb33', '#21ce99', '#00695c', '#0d47a1'
       ],
@@ -61,6 +66,7 @@ class Home extends Component {
   componentWillMount() {
     this.loadCalendar()
     this.getSideData()
+    this.getHidden()
     this.handleWindowChange()
     window.addEventListener('resize', this.handleWindowChange);
   }
@@ -69,6 +75,7 @@ class Home extends Component {
     this.props.updateUser(data)
     this.loadCalendar()
     this.getSideData()
+    this.getHidden()
   }
 
   componentWillUnMount() {
@@ -94,78 +101,77 @@ class Home extends Component {
     this.setState({mileStonesCalendar: []}, () => {
       for (let i in this.props.user.projects) {
         let projects = this.props.user.projects[i]
-        let index = 0;
-        for (let j in projects.mileStones) {
-          let mileStones = projects.mileStones[j]
-          let dateObject = this.convertDate(mileStones.dueDate)
-          let event
-          if(projects.mileStones[j].completed) {
+        if (!projects.hidden) {
+          for (let j in projects.mileStones) {
+            let mileStones = projects.mileStones[j]
+            let dateObject = this.convertDate(mileStones.dueDate)
+            let event
+            if(projects.mileStones[j].completed) {
+              event = {
+                project: projects,
+                color: '#9e9e9e',
+                id: mileStones.id, 
+                title: mileStones.name,
+                allDay: true,
+                start: dateObject,
+                end: dateObject,
+              }
+            }
+            else if (this.datePassed(projects.mileStones[j].dueDate)) {
+              event = {
+                project: projects,
+                color: '#b71c1c',
+                id: mileStones.id, 
+                title: mileStones.name,
+                allDay: true,
+                start: dateObject,
+                end: dateObject,
+              }
+            }
+            else {
+              event = {
+                project: projects,
+                color: this.state.colors[i],
+                id: mileStones.id, 
+                title: mileStones.name,
+                allDay: true,
+                start: dateObject,
+                end: dateObject,
+              }
+            }
+            let temp = this.state.mileStonesCalendar
+            temp.push(event)
+            this.setState({mileStonesCalendar: temp})
+          }
+          let dateObject = this.convertDate(projects.dueDate)
+          let event = {} 
+          if (projects.completed) {
             event = {
               project: projects,
               color: '#9e9e9e',
-              id: j, 
-              title: mileStones.name,
+              id: projects.id, 
+              title: projects.name,
               allDay: true,
               start: dateObject,
               end: dateObject,
             }
-          }
-          else if (this.datePassed(projects.mileStones[j].dueDate)) {
-            event = {
-              project: projects,
-              color: '#b71c1c',
-              id: mileStones.id, 
-              title: mileStones.name,
-              allDay: true,
-              start: dateObject,
-              end: dateObject,
-            }
-          }
-          else {
+          } else { 
             event = {
               project: projects,
               color: this.state.colors[i],
-              id: mileStones.id, 
-              title: mileStones.name,
+              id: projects.id, 
+              title: projects.name,
               allDay: true,
               start: dateObject,
               end: dateObject,
             }
           }
-          index = j;
           let temp = this.state.mileStonesCalendar
           temp.push(event)
           this.setState({mileStonesCalendar: temp})
         }
-        let dateObject = this.convertDate(projects.dueDate)
-        let event = {} 
-        if (projects.completed) {
-          event = {
-            project: projects,
-            color: '#9e9e9e',
-            id: projects.id, 
-            title: projects.name,
-            allDay: true,
-            start: dateObject,
-            end: dateObject,
-          }
-        } else { 
-          event = {
-            project: projects,
-            color: this.state.colors[i],
-            id: projects.id, 
-            title: projects.name,
-            allDay: true,
-            start: dateObject,
-            end: dateObject,
-          }
-        }
-        let temp = this.state.mileStonesCalendar
-        temp.push(event)
-        this.setState({mileStonesCalendar: temp})
       }
     })
- 
   }
 
   moveEvent = ({event, start, end}) => {
@@ -242,42 +248,71 @@ class Home extends Component {
            day1.getDate() === day2.getDate()
   }
 
-  getSideData = () => {
-    this.setState({projectSideBar: []}, () => {
+  getHidden= () => {
+    this.setState({hiddenBar: []}, () => {
       for (let i in this.props.user.projects) {
         let projects = this.props.user.projects[i]
 
         let today = new Date()
         let dueDate = this.convertDate(projects.dueDate)
-        let numberOfDays = this.daysBetween(today, dueDate)
-        let milestoneToday = this.getMileStoneToday(projects)
 
         let sideData = {} 
-        if (projects.completed) {
+        if (projects.hidden) {
           sideData = {
             name: projects.name,
             dueDate: projects.dueDate,
-            numberOfDays: numberOfDays,
-            mileStoneToday: milestoneToday,
             color: '#9e9e9e',
           }
-        } else { 
-          sideData = {
-            name: projects.name,
-            dueDate: projects.dueDate,
-            numberOfDays: numberOfDays,
-            mileStoneToday: milestoneToday,
-            color: this.state.colors[i],
-          }
+          let temp = this.state.hiddenBar
+          temp.push(sideData)
+          this.setState({hiddenBar: temp})
         }
+      }
+//      let temp = this.state.hiddenBar
+//      temp.sort(this.sortByDays)
+//      this.setState({hiddenBar: temp})
+    })    
+  }
 
+  getSideData = () => {
+    this.setState({projectSideBar: []}, () => {
+      for (let i in this.props.user.projects) {
+        let projects = this.props.user.projects[i]
+
+        if (!projects.hidden) {
+        
+          let today = new Date()
+          let dueDate = this.convertDate(projects.dueDate)
+          let numberOfDays = this.daysBetween(today, dueDate)
+          let milestoneToday = this.getMileStoneToday(projects)
+
+          let sideData = {} 
+          if (projects.completed) {
+            sideData = {
+              name: projects.name,
+              dueDate: projects.dueDate,
+              numberOfDays: numberOfDays,
+              mileStoneToday: milestoneToday,
+              color: '#9e9e9e',
+            }
+          } else { 
+            sideData = {
+              name: projects.name,
+              dueDate: projects.dueDate,
+              numberOfDays: numberOfDays,
+              mileStoneToday: milestoneToday,
+              color: this.state.colors[i],
+            }
+          }
+
+          let temp = this.state.projectSideBar
+          temp.push(sideData)
+          this.setState({projectSideBar: temp})
+        }
         let temp = this.state.projectSideBar
-        temp.push(sideData)
+        temp.sort(this.sortByDays)
         this.setState({projectSideBar: temp})
       }
-      let temp = this.state.projectSideBar
-      temp.sort(this.sortByDays)
-      this.setState({projectSideBar: temp})
     })
   }
 
@@ -318,6 +353,10 @@ class Home extends Component {
     this.setState({editBackdrop: false}, () => {
       this.setState({editProjectModal: !this.state.editProjectModal})
     })
+  }
+
+  toggleHid = () => {
+    this.setState({modalHid: !this.state.modalHid})
   }
 
   onClick = () => {
@@ -362,6 +401,7 @@ class Home extends Component {
       isWideEnough: this.state.isWideEnough,
       onClick: this.onClick,
       toggle: this.toggle,
+      toggleHid: this.toggleHid,
       collapse: this.state.collapse,
       handleSignOut: this.handleSignOut,
     }
@@ -384,6 +424,13 @@ class Home extends Component {
       updateUserHome: this.updateUserHome,
     }
 
+    const hiddenProps = {
+      modalHid: this.state.modalHid,
+      user: this.props.user,
+      toggleHid: this.toggleHid,
+      hiddenBar: this.state.hiddenBar,
+    }
+
     return (
       <div>
           <NavBar {...navProps} />
@@ -401,6 +448,12 @@ class Home extends Component {
               null
             :
               <EditProject {...editProjectProps}/>
+          }
+          {this.state.hiddenBar.length === 0
+          ?
+          null
+          :
+          <Hidden {...hiddenProps}/>
           }
 
           <Row>

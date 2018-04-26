@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.getUserFromLocalStorage();
+    this.getUserFromsessionStorage();
     let self = this;
     firebase.auth().onAuthStateChanged(
       (user) => {
@@ -55,14 +55,14 @@ class App extends Component {
     )
   }
 
-  getUserFromLocalStorage() {
-    const uid = localStorage.getItem('uid');
+  getUserFromsessionStorage() {
+    const uid = sessionStorage.getItem('uid');
     if (!uid) return;
     this.setState({uid})
   }
 
   authHandler = (user) => {
-    localStorage.setItem('uid', user.uid);
+    sessionStorage.setItem('uid', user.uid);
     this.setState({uid: user.uid})
   };
 
