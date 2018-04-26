@@ -202,7 +202,8 @@ class Home extends Component {
           let newUser = this.props.user;
           newUser.projects[i].mileStones[j].dueDate = newDate;
           this.props.updateUser(newUser);
-          this.loadCalendar()
+          this.loadCalendar();
+          this.getSideData();
           this.sendUpdatedProject(newProject);
           return;
         }
