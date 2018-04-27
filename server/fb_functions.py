@@ -97,6 +97,6 @@ def updateProject(user,project):
         u'completed': project.completed,
         u'hidden': project.hidden,
         #u'id': project.id,
-        #u'dueDate': project.dueDate,
+        u'dueDate': project.dueDate,
         u'mileStones': project.mileStones,
     })

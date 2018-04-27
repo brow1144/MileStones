@@ -86,7 +86,7 @@ class Home extends Component {
     axios.put('https://milestones.mybluemix.net/users/projects/update', project).then((response) => {
           axios.get(`https://milestones.mybluemix.net/users/${this.props.user.id}`)
             .then((response) => {
-              //console.log(response);
+              console.log(response);
             })
             .catch((error) => {
               console.log(error);
@@ -181,6 +181,29 @@ class Home extends Component {
 
     for (let i in this.props.user.projects) {
       let projects = this.props.user.projects[i]
+      if(projects.id === mid) {
+        let newProject = {
+            'user': {
+                'id': this.props.user.id,
+                'name': this.props.user.name
+            },
+            'project': {
+                'name': projects.name,
+                'dueDate': newDate,
+                'hidden': projects.hidden,
+                'completed': projects.completed,
+                'id': projects.id, 
+                'mileStones': projects.mileStones,
+            }
+          }
+        let newUser = this.props.user;
+        newUser.projects[i].dueDate = newDate;
+        this.props.updateUser(newUser);
+        this.loadCalendar();
+        this.getSideData();
+        this.sendUpdatedProject(newProject);
+        return;
+      }
       for (let j in projects.mileStones) {
         if(projects.mileStones[j].id === mid) {
           projects.mileStones[j].dueDate = newDate;
