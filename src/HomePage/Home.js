@@ -130,7 +130,7 @@ class Home extends Component {
             else {
               event = {
                 project: projects,
-                color: this.state.colors[i],
+                color: this.state.colors[i%this.state.colors.length],
                 id: mileStones.id, 
                 title: mileStones.name,
                 allDay: true,
@@ -157,7 +157,7 @@ class Home extends Component {
           } else { 
             event = {
               project: projects,
-              color: this.state.colors[i],
+              color: this.state.colors[i%this.state.colors.length],
               id: projects.id, 
               title: projects.name,
               allDay: true,
@@ -303,7 +303,7 @@ class Home extends Component {
               dueDate: projects.dueDate,
               numberOfDays: numberOfDays,
               mileStoneToday: milestoneToday,
-              color: this.state.colors[i],
+              color: this.state.colors[i%this.state.colors.length],
             }
           }
 
