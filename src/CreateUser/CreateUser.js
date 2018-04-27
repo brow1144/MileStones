@@ -42,7 +42,7 @@ class CreateUser extends Component {
             // console.log(userData)
 
             // Make addUser httpRequest
-            axios.post('http://localhost:5000/users', {
+            axios.post('https://milestones.mybluemix.net/users', {
               name: target.firstName.value + " " + target.lastName.value,
               id: userData.uid,
             })
